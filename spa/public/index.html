@@ -76,7 +76,7 @@
 
         h1 {
             margin: 0;
-            font-size: 4.75rem;
+            font-size: 3rem;
             color: #D58936;
             font-weight: 400;
             letter-spacing: .25rem;
@@ -85,9 +85,8 @@
 
         h2 {
             margin: 0;
-            margin-top: -0.25rem;
             margin-left: -0.45rem;
-            font-size: 2.125rem;
+            font-size: 1.5rem;
             color: #D58936;
             font-weight: 400;
         }
@@ -98,14 +97,31 @@
         }
 
         p#explanation {
+            display: block;
             position: fixed;
-            bottom: 1.5vh;
-            left: 50vw;
-            transform: translateX(-50%);
+            bottom: 2vh;
+            left: 0;
+            width: 100vw;
+            text-align: center;
             margin: 0;
             font-size: 0.75rem;
             color: #fff;
             opacity: 0.5;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 4.75rem;
+            }
+
+            h2 {
+                font-size: 2.125rem;
+                margin-top: -0.25rem;
+            }
+
+            p#explanation {
+                bottom: 1.5vh;
+            }
         }
     </style>
 </head>
