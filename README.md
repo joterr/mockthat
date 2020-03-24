@@ -1,6 +1,8 @@
 # MOCKTHAT.dev
 Free collection of several supporting development tools. www.mockthat.dev
 
+![Screenshot MOCKTHAT.dev](screenshot.png)
+
 ## You wanna contribute?
 Get in touch with me - via email hallo@jannikrulitschka.de, LinkedIn or simply make a pull request.
 
