@@ -1,0 +1,45 @@
+@import "../../../../styles.scss";
+
+header {
+    height: 12vh;
+    padding: 0 1.5vw;
+    position: relative;
+
+    nav {
+        display: none;
+    }
+
+    .logo {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 1rem;
+        z-index: 9;
+
+        .main,
+        .subline {
+            @include std-text-bold();
+            color: $color-highlight;
+            font-size: 2.75rem;
+            text-align: center;
+        }
+
+        .main {
+            letter-spacing: .75rem;
+            text-shadow: 0 2px 3px rbga(0, 0, 0, 1);
+        }
+
+        .subline {
+            z-index: -1;
+            color: #fff;
+            font-size: 1.2rem;
+            margin-top: -.125rem;
+            margin-right: 0.75rem;
+            opacity: .6;
+        }
+
+        .subline span {
+            @include std-text();
+        }
+    }
+}

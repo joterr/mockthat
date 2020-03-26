@@ -1,0 +1,14 @@
+<footer>
+    <ul>
+        <li (click)="togglePrivacy()">Privacy</li>
+        <li (click)="toggleLegalNotice()">Impressum – Legal Notice</li>
+    </ul>
+</footer>
+<section class="static-page privacy" *ngIf="showPrivacy">
+    <div (click)="togglePrivacy()" class="close">close</div>
+    <h1>Privacy</h1>
+</section>
+<section class="static-page legal-notice" *ngIf="showLegalNotice">
+    <div (click)="toggleLegalNotice()" class="close">close</div>
+    <h1>Impressum - Legal Notice</h1>
+</section>

@@ -1,0 +1,33 @@
+@import "../../../styles.scss";
+
+.editor {
+    position: relative;
+    z-index: 999;
+    height: 100%;
+    background-color: $color-editor;
+    border-radius: .25rem;
+    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    
+    .state {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        @include std-text-bold();
+        font-size: large;
+        padding: 55% 0.75rem 0 0.75rem;
+        border-radius: 0.01rem;
+        color: $color-editor;
+        text-align: right;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+        &.valid {
+            background-color: $color-valid; 
+        }
+    
+        &.invalid {
+            background-color: $color-invalid; 
+        }
+    }
+}

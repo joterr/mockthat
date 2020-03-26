@@ -1,1 +1,4 @@
-<p>json-validator works!</p>
+<div class="editor">
+    <div class="state valid" *ngIf="isValid && hasResult">VALID</div>
+    <div class="state invalid" *ngIf="!isValid && hasResult">INVALID</div>
+</div>

@@ -1,0 +1,40 @@
+@import "../../../../styles.scss";
+
+footer {
+    padding-top: .5vh;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+
+        li {
+            cursor: pointer;
+            padding: 0 1rem;
+            font-size: x-small;
+            opacity: 0.5;
+            @include std-text-bold();
+            display: inline-block;
+            color: #fff;
+            list-style-type: none;
+            transition: 300ms ease;
+
+            &:hover {
+                text-decoration: underline;
+                opacity: 1;     
+            }
+        }
+    }  
+}
+
+.static-page {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 12vh 18vw;
+    color: #fff;
+}
