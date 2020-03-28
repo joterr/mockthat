@@ -1,6 +1,9 @@
 <header>
     <nav>
-        <app-select-tool></app-select-tool>
+        <ul>
+            <li><a [routerLink]="['/json-validator']" routerLinkActive="active">JSON Validator</a></li>
+            <li><a class="disabled" [routerLink]="['/rest-api']" routerLinkActive="active">In-Browser REST API</a></li>
+        </ul>
     </nav>
     <div class="logo">
         <div class="main">MOCKTHAT</div>

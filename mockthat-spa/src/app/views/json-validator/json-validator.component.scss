@@ -6,28 +6,119 @@
     height: 100%;
     background-color: $color-editor;
     border-radius: .25rem;
-    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1.75rem rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    
-    .state {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        @include std-text-bold();
-        font-size: large;
-        padding: 55% 0.75rem 0 0.75rem;
-        border-radius: 0.01rem;
-        color: $color-editor;
-        text-align: right;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.editor-input {
+    height: 100%;
+    width: 50%;
+    float: left;
+    padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+
+    .editor-validation {
+        position: relative;
+        height: 100%;
+
+        &:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            opacity: 0.35;
+            border-radius: 0.125rem;
+            transition: 300ms ease background-color;
+            background-color: rgb(255, 255, 255, 0.1);
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .state {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+            @include std-text-boldest();
+            font-size: x-large;
+            padding: 0.75rem;
+            color: #fff;    
+        }
 
         &.valid {
-            background-color: $color-valid; 
+            .state.valid {
+                display: block;
+            }
+
+            &:after {
+                background-color: $color-valid;
+            }
         }
     
         &.invalid {
-            background-color: $color-invalid; 
+            .state.invalid {
+                display: block;
+            }
+
+            &:after {
+                background-color: $color-invalid;
+            }
+        }
+
+        textarea {
+            display: block;
+            resize: none;
+            padding: 1rem;
+            @include std-text-mono();
+            font-size: small;
+            height: 100%;
+            max-height: 100%;
+            width: 100%;
+            color: #fff;
+            border: 0;
+            outline: none;
+            border-radius: .125rem;
+            background: none;
         }
     }
 }
+
+.editor-formatted {
+    float: right;
+    position: relative;
+    width: 50%;
+    height: 100%;
+    padding: 0.5rem 0.5rem 0.5rem 0.25rem;
+
+    .editor-formatted-controls {
+        position: absolute;
+        top: 1.5rem;
+        right: 1rem;
+        z-index: 999;
+
+        button {
+            display: inline-block;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            background-color: #fff;
+            border: none;
+            outline: none;
+            @include std-text-boldest();
+            font-size: medium;
+            color: $color-editor;
+            padding: 0.25rem 0.5rem;
+            text-transform: uppercase;
+            border-radius: 0.05rem;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        }
+    }
+    span {
+        display: block;
+        color: #fff;
+        padding: 1rem;
+        width: 100%;
+        height: 100%;
+    }
+}
+

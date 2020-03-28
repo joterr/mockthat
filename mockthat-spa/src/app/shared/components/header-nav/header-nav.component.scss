@@ -6,13 +6,61 @@ header {
     position: relative;
 
     nav {
-        display: none;
+        position: absolute;
+        left: 1rem;
+        bottom: 0.25rem;
+        z-index: 9;
+
+        ul {
+
+            li {
+                display: inline-block;
+                list-style-type: none;
+                margin-right: 2.25rem;
+
+                a {
+                    position: relative;
+                    display: inline-block;
+                    @include std-text-bold();
+                    font-size: x-large;
+                    color: #fff;
+                    text-decoration: none;
+                    padding: 0.15rem;
+                    transition: 300ms ease opacity;
+                    color: rgba(255, 255, 255, 0.5);
+
+                    &.active {
+                        color: rgba(255, 255, 255, 1);
+                        @include std-text-boldest();
+                        border-bottom: 2px solid $color-highlight;
+                    }
+
+                    &.disabled {
+                        &:hover {
+
+                            &:after {
+                                @include std-text-boldest();
+                                content: "PLANNED";
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                padding: 0.1rem;
+                                text-align: center;
+                                font-size: small;
+                                color: $color-highlight;
+                                background-color: $color-editor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .logo {
         position: absolute;
-        right: 0;
-        left: 0;
+        right: 1rem;
         bottom: 1rem;
         z-index: 9;
 
@@ -21,19 +69,19 @@ header {
             @include std-text-bold();
             color: $color-highlight;
             font-size: 2.75rem;
-            text-align: center;
+            text-align: right;
         }
 
         .main {
             letter-spacing: .75rem;
-            text-shadow: 0 2px 3px rbga(0, 0, 0, 1);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, .35);
         }
 
         .subline {
             z-index: -1;
             color: #fff;
             font-size: 1.2rem;
-            margin-top: -.125rem;
+            margin-top: -.25rem;
             margin-right: 0.75rem;
             opacity: .6;
         }

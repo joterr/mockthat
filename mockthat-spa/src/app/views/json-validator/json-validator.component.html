@@ -1,4 +1,16 @@
 <div class="editor">
-    <div class="state valid" *ngIf="isValid && hasResult">VALID</div>
-    <div class="state invalid" *ngIf="!isValid && hasResult">INVALID</div>
+    <div class="editor-input">
+        <div class="editor-validation" [ngClass]="{ 'valid': isValid && hasResult, 'invalid': !isValid && hasResult }">
+            <div class="state valid">VALID</div>
+            <div class="state invalid">INVALID</div>
+            <textarea #rawJson (keyup)="rawJsonChanged($event)"></textarea>
+        </div>
+    </div>
+    <div class="editor-formatted">
+        <div class="editor-formatted-controls">
+            <button type="button" (click)="toggleTypes()">Show Types</button>
+            <button type="button" (click)="copyFormatted()">Copy</button>
+        </div>
+        <span [class.show-types]="showTypes" #formatted></span>
+    </div>
 </div>
