@@ -3,14 +3,56 @@
         <div class="editor-validation" [ngClass]="{ 'valid': isValid && hasResult, 'invalid': !isValid && hasResult }">
             <div class="state valid">VALID</div>
             <div class="state invalid">INVALID</div>
-            <textarea #rawJson (keyup)="rawJsonChanged($event)"></textarea>
+            <textarea #rawJson (keyup)="rawJsonChanged($event)" contenteditable="false" spellcheck="false"></textarea>
         </div>
     </div>
     <div class="editor-formatted">
         <div class="editor-formatted-controls">
             <button type="button" (click)="toggleTypes()">Show Types</button>
-            <button type="button" (click)="copyFormatted()">Copy</button>
+            <button type="button" (click)="copyBeautified()">Copy Beautified</button>
+            <button type="button" (click)="copyStringified()">Copy Stringified</button>
         </div>
-        <span [class.show-types]="showTypes" #formatted></span>
+        <section class="json-beautified" *ngIf="isValid && hasResult" [class.show-types]="showTypes">
+            <div class="scrollable">
+                <div class="editor-result">
+                    <div class="editor-numeration">
+                        <span *ngFor="let i of [].constructor(100); let row = index">{{ row }}</span>
+                    </div>
+                    <ul>
+                        <ng-template #recursiveList let-list>
+                            <li *ngFor="let item of list; let i = index" [class.hide-content]="!item.show">
+                                <span class="json-key" *ngIf="item.key">"{{item.key}}":&nbsp;</span><span
+                                    class="json-type">{{item.type}}</span><span (click)="item.show = !item.show"
+                                    class="json-bracket start" *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
+                                    (click)="item.show = !item.show" class="json-bracket start"
+                                    *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
+                                <ul
+                                    *ngIf="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT; else stringTemplate">
+                                    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.value }">
+                                    </ng-container>
+                                </ul>
+                                <ng-template #stringTemplate [ngSwitch]="item.type">
+                                    <span class="json-value"
+                                        *ngSwitchCase="TYPES.BOOLEAN">{{item.value ? 'true' : 'false'}}<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-value" *ngSwitchCase="TYPES.STRING">"{{item.value}}"<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-value" *ngSwitchCase="TYPES.NUMBER">{{item.value}}<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                </ng-template>
+                                <span class="json-bracket" *ngIf="item.type === TYPES.OBJECT">{{ '}' }}<span
+                                        class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                <span class="json-bracket" *ngIf="item.type === TYPES.ARRAY">{{ ']' }}<span
+                                        class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                            </li>
+                        </ng-template>
+                        <ng-container
+                            *ngTemplateOutlet="recursiveList; context: { $implicit: structuredJson, indexPar: -1 }">
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <textarea id="shadowedTextarea" #shadowedTextarea></textarea>
     </div>
 </div>

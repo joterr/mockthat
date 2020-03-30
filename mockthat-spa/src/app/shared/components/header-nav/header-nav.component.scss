@@ -1,14 +1,14 @@
 @import "../../../../styles.scss";
 
 header {
-    height: 12vh;
+    height: 10vh;
     padding: 0 1.5vw;
     position: relative;
 
     nav {
         position: absolute;
         left: 1rem;
-        bottom: 0.25rem;
+        bottom: 0.5rem;
         z-index: 9;
 
         ul {
@@ -48,8 +48,8 @@ header {
                                 padding: 0.1rem;
                                 text-align: center;
                                 font-size: small;
-                                color: $color-highlight;
-                                background-color: $color-editor;
+                                background-color: $color-highlight;
+                                color: $color-editor;
                             }
                         }
                     }
@@ -75,6 +75,21 @@ header {
         .main {
             letter-spacing: .75rem;
             text-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+            position: relative;
+
+            &:after {
+                content: "BETA";
+                position: absolute;
+                bottom: 50%;
+                transform: translateY(65%);
+                left: 2.25rem;
+                @include std-text-boldest();
+                color: #fff;
+                background-color: #000;
+                font-size: small;
+                letter-spacing: 0;
+                padding: 0 0.1rem;
+            }
         }
 
         .subline {
