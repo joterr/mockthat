@@ -92,6 +92,19 @@ $color-invalid: #E04F34;
 }
 
 body {
-    @include std-text();
+    @include std-text-bold();
     background-color: $color-base;
+}
+
+p {
+    @include std-text-bold();
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @include std-text-boldest();
 }

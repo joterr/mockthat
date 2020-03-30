@@ -173,15 +173,39 @@
 
         .json-type {
             display: none;
-            color: $color-editor;
-            background-color: #fff;
-            font-size: x-small;
-            line-height: 110%;
-            padding: 0 0.1rem;
-            margin: 0.25rem 0.5rem 0 0;
             vertical-align: top;
-            @include std-text-boldest();
-            border-radius: 0.1rem;
+
+            &:after {
+                content: "";
+                color: $color-editor;
+                background-color: #fff;
+                font-size: x-small;
+                line-height: 110%;
+                padding: 0 0.1rem;
+                margin: 0.25rem 0.5rem 0 0;
+                @include std-text-boldest();
+                border-radius: 0.1rem;
+            }
+
+            &.object:after {
+                content: "OBJECT";
+            }
+
+            &.boolean:after {
+                content: "BOOLEAN";
+            }
+
+            &.array:after {
+                content: "ARRAY";
+            }
+
+            &.number:after {
+                content: "NUMBER";
+            }
+
+            &.string:after {
+                content: "STRING";
+            }
         }
 
         &.show-types .json-type {
@@ -223,7 +247,7 @@
                     content: "...";
                 }
             }
-            & > *:not(.json-bracket) {
+            & > *:not(.json-bracket):not(.json-key):not(.json-type) {
                 display: none;
             }
         }

@@ -1,12 +1,14 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { JsonType, Types } from './json-validator.model';
+import { Subscription } from 'rxjs';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-json-validator',
     templateUrl: './json-validator.component.html',
     styleUrls: [ './json-validator.component.scss' ]
 })
-export class JsonValidatorComponent implements OnInit {
+export class JsonValidatorComponent implements OnInit, OnDestroy {
     @ViewChild('rawJson') rawJson: ElementRef;
     @ViewChild('shadowedTextarea') shadowedTextarea: ElementRef;
 
@@ -18,32 +20,38 @@ export class JsonValidatorComponent implements OnInit {
     structuredJson: JsonType[] = [];
     checkedJson = '';
 
+    readonly jsonHistoryKey: string = 'json_validation_history';
     readonly TYPES = Types;
-    // tslint:disable-next-line:max-line-length
-    readonly exampleJson = '{"employees":{"employee":[{"id":"1","firstName":true,"lastName":"Cruise","photo":"https://jsonformatter.org/img/tom-cruise.jpg"},{"id":"2","firstName":"Maria","lastName":"Sharapova","photo":"https://jsonformatter.org/img/Maria-Sharapova.jpg"},{"id":"3","firstName":"Robert","lastName":"Downey Jr.","photo":"https://jsonformatter.org/img/Robert-Downey-Jr.jpg"}]}}';
 
-    constructor() { }
+    private subCollector: Subscription[] = [];
+
+    constructor(private localStorage: LocalStorageService) { }
 
     ngOnInit(): void {
         window.setTimeout(() => {
-            this.rawJson.nativeElement.value = this.exampleJson;
-            this.rawJsonChanged(null);
-
             this.rawJson.nativeElement.focus();
+            this.dehydrate();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.subCollector.forEach((sub: Subscription) => sub.unsubscribe());
     }
 
     rawJsonChanged(value: KeyboardEvent): void {
         const text: string = this.rawJson.nativeElement.value;
         this.hasResult = !!text;
 
+        // TO DO: Optimise RegEx
         if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
             replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
             replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
             try {
                 this.checkedJson = JSON.parse(text);
-                this.rawJson.nativeElement.value = JSON.stringify(this.checkedJson, null, 4);
+                this.rawJson.nativeElement.value = this.beautifyJson(this.checkedJson);
+                this.localStorage.store(this.jsonHistoryKey, JSON.stringify(this.checkedJson));
+
                 this.structuredJson = this.dismantleJson({ '': this.checkedJson });
                 console.log(this.structuredJson);
 
@@ -51,7 +59,7 @@ export class JsonValidatorComponent implements OnInit {
             } catch (e) {
                 this.isValid = false;
 
-                // if SyntaxError
+                // TO DO: add Error Analyse for SyntaxError
                 console.error(e);
             }
         } else {
@@ -69,6 +77,18 @@ export class JsonValidatorComponent implements OnInit {
 
     toggleTypes(): void {
         this.showTypes = !this.showTypes;
+    }
+
+    private beautifyJson(json: string): string {
+        return JSON.stringify(json, null, 4);
+    }
+
+    private dehydrate(): void {
+        const jsonString: string = this.localStorage.retrieve(this.jsonHistoryKey);
+        if (jsonString && JSON.parse(jsonString)) {
+            this.rawJson.nativeElement.value = this.beautifyJson(JSON.parse(jsonString));
+            this.rawJsonChanged(null);
+        }
     }
 
     private doCopy(text: any): void {

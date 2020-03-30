@@ -22,7 +22,7 @@
                         <ng-template #recursiveList let-list>
                             <li *ngFor="let item of list; let i = index" [class.hide-content]="!item.show">
                                 <span class="json-key" *ngIf="item.key">"{{item.key}}":&nbsp;</span><span
-                                    class="json-type">{{item.type}}</span><span (click)="item.show = !item.show"
+                                    class="json-type {{ item.type }}" ></span><span (click)="item.show = !item.show"
                                     class="json-bracket start" *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
                                     (click)="item.show = !item.show" class="json-bracket start"
                                     *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>

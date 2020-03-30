@@ -21,10 +21,10 @@ footer {
 
             &:hover {
                 text-decoration: underline;
-                opacity: 1;     
+                opacity: 1;
             }
         }
-    }  
+    }
 }
 
 .static-page {
@@ -34,7 +34,60 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-    padding: 12vh 18vw;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 12vh 32vw;
     color: #fff;
+
+
+    .scrollable {
+        height: 100%;
+        width: 100%;
+        overflow-y: scroll;
+    }
+
+    .close {
+        @include std-text-boldest();
+        text-decoration: underline;
+        cursor: pointer;
+        padding-bottom: 2vh;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: underline;
+    }
+
+    .fakeEmail {
+        &:before {
+            content: "hello";
+        }
+
+        &:after {
+            content: "mockthat.dev";
+        }
+    }
+
+    .fakeEmailPrivacy {
+        &:before {
+            content: "legal-privacy-concerns";
+        }
+
+        &:after {
+            content: "mockthat.dev";
+        }
+    }
+
+    .fakeAddress {
+        .n:before {
+            content: 'Jannik Rulitschka';
+        }
+
+        .s:before {
+            content: 'Fritz-Kohl-Straße 3A';
+        }
+
+        .c:before {
+            content: '55122 Mainz';
+        }
+    }
 }

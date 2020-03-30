@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { JsonValidatorComponent } from './json-validator.component';
 
-
 @NgModule({
   declarations: [
     JsonValidatorComponent

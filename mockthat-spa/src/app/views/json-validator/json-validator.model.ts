@@ -1,9 +1,9 @@
 export enum Types {
-    STRING = 'STRING',
-    NUMBER = 'NUMBER',
-    BOOLEAN = 'BOOLEAN',
-    ARRAY = 'ARRAY',
-    OBJECT = 'OBJECT'
+    STRING = 'string',
+    NUMBER = 'number',
+    BOOLEAN = 'boolean',
+    ARRAY = 'array',
+    OBJECT = 'object'
 }
 
 export class JsonType {
