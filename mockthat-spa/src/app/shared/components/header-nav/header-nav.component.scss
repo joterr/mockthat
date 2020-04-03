@@ -1,22 +1,32 @@
 @import "../../../../styles.scss";
 
 header {
-    height: 10vh;
-    padding: 0 1.5vw;
+    height: 9vh;
+    margin-bottom: 1rem;
     position: relative;
+
+    @include respond-to('small') {
+        height: 30vh;
+    }
 
     nav {
         position: absolute;
-        left: 1rem;
-        bottom: 0.5rem;
+        left: 2rem;
+        bottom: 0;
         z-index: 9;
 
         ul {
+            margin: 0;
+            padding: 0;
 
             li {
                 display: inline-block;
                 list-style-type: none;
                 margin-right: 2.25rem;
+
+                @include respond-to('small') {
+                    margin-right: 1rem;
+                }
 
                 a {
                     position: relative;
@@ -29,28 +39,33 @@ header {
                     transition: 300ms ease opacity;
                     color: rgba(255, 255, 255, 0.5);
 
+                    @include respond-to('small') {
+                        font-size: medium;
+                    }
+                    @include respond-to('medium') {
+                        font-size: large;
+                    }
+
                     &.active {
                         color: rgba(255, 255, 255, 1);
                         @include std-text-boldest();
                         border-bottom: 2px solid $color-highlight;
                     }
 
-                    &.disabled {
-                        &:hover {
+                    &.disabled:hover {
+                        color: rgba(255, 255, 255, 0.15);
 
-                            &:after {
-                                @include std-text-boldest();
-                                content: "PLANNED";
-                                position: absolute;
-                                top: 50%;
-                                left: 50%;
-                                transform: translate(-50%, -50%);
-                                padding: 0.1rem;
-                                text-align: center;
-                                font-size: small;
-                                background-color: $color-highlight;
-                                color: $color-editor;
-                            }
+                        &:after {
+                            @include std-text-boldest();
+                            content: "PLANNED";
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            padding: 0.1rem;
+                            text-align: center;
+                            font-size: small;
+                            color: #fff;
                         }
                     }
                 }
@@ -61,15 +76,22 @@ header {
     .logo {
         position: absolute;
         right: 1rem;
-        bottom: 1rem;
+        bottom: 0;
         z-index: 9;
 
         .main,
         .subline {
             @include std-text-bold();
             color: $color-highlight;
-            font-size: 2.75rem;
+            font-size: 2.5rem;
             text-align: right;
+
+            @include respond-to('small') {
+                font-size: 1.75rem;
+            }
+            @include respond-to('medium') {
+                font-size: 2.25rem;
+            }
         }
 
         .main {
@@ -82,13 +104,41 @@ header {
                 position: absolute;
                 bottom: 50%;
                 transform: translateY(65%);
-                left: 2.25rem;
+                left: 2rem;
                 @include std-text-boldest();
                 color: #fff;
                 background-color: #000;
                 font-size: small;
                 letter-spacing: 0;
                 padding: 0 0.1rem;
+                opacity: 0;
+                animation: show ease-in 0.3s forwards 0.5s;
+
+                @include respond-to('small') {
+                    left: 1.55rem;
+                    font-size: x-small;
+                }
+                @include respond-to('medium') {
+                    left: 1.85rem;
+                }
+            }
+
+            @keyframes show {
+                0% {
+                    opacity: 0;
+                }
+
+                25% {
+                    opacity: 1;
+                }
+
+                60% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
             }
         }
 
@@ -96,9 +146,16 @@ header {
             z-index: -1;
             color: #fff;
             font-size: 1.2rem;
-            margin-top: -.25rem;
+            margin-top: -.35rem;
             margin-right: 0.75rem;
             opacity: .6;
+
+            @include respond-to('small') {
+                font-size: 1rem;
+            }
+            @include respond-to('medium') {
+                font-size: 1.1rem;
+            }
         }
 
         .subline span {

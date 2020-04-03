@@ -108,3 +108,46 @@ h5,
 h6 {
     @include std-text-boldest();
 }
+
+::-webkit-scrollbar {
+    width: 0.4rem;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 0.1rem;
+    border-radius: 0.1rem;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0.1rem;
+    border-radius: 0.1rem;
+    background: rgba(255, 255, 255, 0.8);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+$breakpoints: ("small": (max-width: 767px),
+    "medium": (max-width: 1279px),
+    "large": (max-width: 1600px));
+
+@mixin respond-to($name) {
+    @if map-has-key($breakpoints, $name) {
+        @media #{inspect(map-get($breakpoints, $name))} {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        +"Please make sure it is defined in `$breakpoints` map.";
+    }
+}

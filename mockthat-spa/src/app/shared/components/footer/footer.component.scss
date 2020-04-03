@@ -1,7 +1,9 @@
 @import "../../../../styles.scss";
 
 footer {
-    padding-top: .5vh;
+    position: relative;
+    z-index: 9;
+    padding-top: 0.125rem;
 
     ul {
         margin: 0;
@@ -38,11 +40,19 @@ footer {
     padding: 12vh 32vw;
     color: #fff;
 
+    @include respond-to('small') {
+        padding: 6vh 8vw; 
+    }
+
+    @include respond-to('medium') {
+        padding: 8vh 22vw; 
+    }
 
     .scrollable {
         height: 100%;
         width: 100%;
         overflow-y: scroll;
+        padding-right: 2rem;
     }
 
     .close {

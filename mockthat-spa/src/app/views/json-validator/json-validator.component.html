@@ -1,16 +1,24 @@
 <div class="editor">
     <div class="editor-input">
         <div class="editor-validation" [ngClass]="{ 'valid': isValid && hasResult, 'invalid': !isValid && hasResult }">
-            <div class="state valid">VALID</div>
-            <div class="state invalid">INVALID</div>
-            <textarea #rawJson (keyup)="rawJsonChanged($event)" contenteditable="false" spellcheck="false"></textarea>
+            <div class="state">
+                <span class="valid">VALID</span>
+                <span class="invalid">INVALID</span>
+                <div class="left-frills frills"></div>
+                <div class="right-frills frills"></div>
+            </div>
+            <div class="version-history">
+                <app-dropdown></app-dropdown>
+            </div>
+            <textarea #rawJson contenteditable="false" spellcheck="false"></textarea>
         </div>
     </div>
     <div class="editor-formatted">
         <div class="editor-formatted-controls">
-            <button type="button" (click)="toggleTypes()">Show Types</button>
-            <button type="button" (click)="copyBeautified()">Copy Beautified</button>
-            <button type="button" (click)="copyStringified()">Copy Stringified</button>
+            <button type="button" class="type-switch" [class.active]="showTypes" (click)="toggleTypes()">
+                <i class="far fa-eye show-on-active"></i><i class="far fa-eye-slash hide-on-active"></i>Types</button>
+            <button type="button" class="copy-fun groupped-left" (click)="copyBeautified()">Copy Beautified</button>
+            <button type="button" class="copy-fun groupped-right" (click)="copyStringified()">Copy Stringified</button>
         </div>
         <section class="json-beautified" *ngIf="isValid && hasResult" [class.show-types]="showTypes">
             <div class="scrollable">
@@ -21,8 +29,9 @@
                     <ul>
                         <ng-template #recursiveList let-list>
                             <li *ngFor="let item of list; let i = index" [class.hide-content]="!item.show">
-                                <span class="json-key" *ngIf="item.key">"{{item.key}}":&nbsp;</span><span
-                                    class="json-type {{ item.type }}" ></span><span (click)="item.show = !item.show"
+                                <span class="json-key" *ngIf="item.key"
+                                    (click)="item.show = !item.show">"{{item.key}}":&nbsp;</span><span
+                                    class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
                                     class="json-bracket start" *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
                                     (click)="item.show = !item.show" class="json-bracket start"
                                     *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
