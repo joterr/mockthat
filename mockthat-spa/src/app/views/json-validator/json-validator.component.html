@@ -8,7 +8,7 @@
                 <div class="right-frills frills"></div>
             </div>
             <div class="version-history">
-                <app-dropdown></app-dropdown>
+                <app-dropdown [entries]="versionSelection" (selected)="selectedVersion($event)"></app-dropdown>
             </div>
             <textarea #rawJson contenteditable="false" spellcheck="false"></textarea>
         </div>

@@ -14,3 +14,10 @@ export class JsonType {
         public show: boolean = true
     ) { }
 }
+
+export class JsonVersionHistory {
+    constructor(
+        public timestamp: string,
+        public json: string
+    ) { }
+}

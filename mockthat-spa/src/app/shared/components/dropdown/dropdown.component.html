@@ -1,12 +1,12 @@
-<div class="dropdown" :class="{'is-expanded': isExpanded, 'animate': selectedMode === veganMode}">
-    <div class="left-frills frills"></div>
-    <div class="right-frills frills"></div>
-    <span class="width-maker">{{ 'SELECTED' }}</span>
-    <ul :class="getSelectedModeClass(mode.id)">
-        <li v-for="mode in SELECTABLE_MODES" :key="mode.id" :class="{'active': mode.id === selectedMode}">
-            <input type="radio" v-model="selectedMode" :value="mode.id" :id="mode.id"
-                v-on:click="handleSelfClicked(mode.id, $event)" />
-            <label :for="mode.id">{{ 'ID' }}</label>
+<div class="dropdown" [ngClass]="{'is-expanded': isExpanded}">
+    <ul>
+        <li *ngFor="let entry of entries; index as i;">
+            <input type="radio" [value]="entry" id="entry-{{i}}"(click)="handleSelfClicked(i)" />
+            <label for="entry-{{i}}">{{ entry }}</label>
         </li>
     </ul>
+    <div class="current-selected" (click)="isExpanded = !isExpanded">
+        <span>{{ entries[selectedIndex] }}</span>
+        <i class="fas fa-stream"></i>
+    </div>
 </div>

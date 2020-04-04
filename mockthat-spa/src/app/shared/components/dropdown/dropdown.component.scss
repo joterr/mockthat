@@ -1,159 +1,79 @@
 @import "../../../../styles.scss";
 
-$element-height-base: 1.75rem;
-$element-padding-vertical: 0.3125rem;
-$element-padding-horizontal: 0.625rem;
-$element-border-radius: 0.1rem;
-$element-border-width: 0.125rem;
-$element-height: $element-height-base+$element-padding-vertical;
-$element-height-complete: $element-height+$element-border-width * 2;
-
-$font-size: medium;
-$font-size-small: small;
 
 .dropdown {
     position: static;
     z-index: 999;
-    height: calc(#{$element-height-complete});
-    border-radius: $element-border-radius;
-    overflow: hidden;
+    font-size: small;
 
-    .width-maker {
-        opacity: 0;
-        display: inline-block;
-        @include std-text-boldest();
-        padding-left: $element-padding-horizontal;
-        padding-right: calc(#{$element-padding-horizontal} * 2 + 0.4rem + 0.75rem);
-        font-size: $font-size;
+    .current-selected {
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.05rem;
+        color: $color-editor;
+        border: #fff solid 1px;
+        background-color: #fff;
 
-        @include respond-to("small") {
-            font-size: $font-size-small;
+        span {
+            display: inline-block;
+            margin-right: 0.65rem;
+            @include std-text-boldest();
         }
-
-        text-transform: uppercase;
     }
 
     ul {
+        display: none;
         margin: 0;
-        margin-top: -1rem;
         padding: 0;
         position: relative;
         top: 0;
         left: 0;
         right: 0;
         width: 100%;
-        border-radius: $element-border-radius;
-        overflow: hidden;
-        border: $element-border-width solid transparent;
+        padding-bottom: 0.125rem;
 
-        @for $i from 0 through 3 {
-            &.active-#{$i} {
-                top: calc((#{$element-height}) * -1 * #{$i});
-            }
+        &:after {
+            border-radius: 0.05rem;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: $color-editor;
+            opacity: 0.75;
         }
 
         li {
             list-style-type: none;
             background-color: transparent;
 
+            input {
+                width: 1px;
+                height: 1px;
+                display: inline-block;
+                position: absolute;
+                opacity: 0;
+            }
+
             label {
                 position: relative;
                 z-index: 99;
                 cursor: pointer;
                 display: block;
-                height: $element-height;
-                line-height: $element-height;
-                color: rgb(195, 195, 195);
-                @include std-text();
-                text-transform: uppercase;
-                font-size: $font-size;
+                padding: 0.25rem 0.5rem;
+                color: #fff;
+                @include std-text-bold();
+                line-height: 120%;
 
-                @include respond-to("small") {
-                    font-size: $font-size-small;
-                }
-
-                padding: $element-padding-vertical $element-padding-horizontal;
-                padding-top: 0;
-                padding-right: 1.6rem;
-                opacity: 0;
-            }
-
-            &.active {
-                label:after {
-                    content: "";
-                    position: absolute;
-                    right: 0.75rem;
-                    top: calc(#{$element-height-complete} / 2);
-                    z-index: 9999;
-                    width: 0.45rem;
-                    height: 0.45rem;
-                    border: 0.16rem solid;
-                    border-color: #fff transparent transparent #fff;
-                    transform: translateY(-100%) rotate(-135deg);
-                    cursor: pointer;
-                }
-
-                label {
-                    border-radius: $element-border-radius;
-                    background-color: #fff;
-                    color: #fff;
-                    @include std-text-boldest();
-                    opacity: 1;
+                &:hover {
+                    opacity: 0.65;
                 }
             }
         }
     }
 
-    &.is-expanded {
-        animation: none;
-        overflow: visible;
-        height: auto;
-        width: 200px;
-        box-shadow: none;
-
-        ul {
-            border: $element-border-width solid rgba(255, 255, 255, 0.4);
-
-            li {
-                background-color: rgba(255, 255, 255, 0.4);
-
-                label {
-                    opacity: 1;
-                }
-
-                &.active label:after {
-                    right: 0.5rem;
-                    transform: translateY(-70%) rotate(-45deg);
-                }
-            }
-        }
-    }
-
-    input {
-        width: 1px;
-        height: 1px;
-        display: inline-block;
-        position: absolute;
-        opacity: 0;
-    }
-}
-
-
-@keyframes delayShowBlurAndHide {
-    0% {
-        opacity: 0;
-        filter: blur(3px);
-    }
-    10% {
-        opacity: 1;
-        filter: blur(0);
-    }
-    95% {
-        opacity: 1;
-        filter: blur(0);
-    }
-    100% {
-        opacity: 0;
-        filter: blur(3px);
+    &.is-expanded ul {
+        display: block;
     }
 }

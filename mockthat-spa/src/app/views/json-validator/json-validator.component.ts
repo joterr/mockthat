@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit, Type } from '@angular/core';
-import { JsonType, Types } from './json-validator.model';
+import { JsonType, Types, JsonVersionHistory } from './json-validator.model';
 import { Subscription, fromEvent } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -19,20 +19,25 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
 
     structuredJson: JsonType[] = [];
     checkedJson = '';
+    versionHistory: JsonVersionHistory[] = [];
 
-    readonly jsonHistoryKey: string = 'json_validation_history';
+    versionSelection: string[] = [];
+
     readonly TYPES = Types;
-    readonly TAB_SIZE: number = 4;
 
     private subCollector: Subscription[] = [];
     private debounceBeautifyRaw: any; // NodeJS.Timeout
+    private debounceVersionHistory: any; // NodeJS.Timeout
+
+    private readonly jsonHistoryKey: string = 'json_validation_history';
+    private readonly TAB_SIZE: number = 4;
+    private readonly versionHistoryDebounceVal = 5000;
 
     constructor(private localStorage: LocalStorageService) { }
 
     ngOnInit(): void {
         window.setTimeout(() => {
             this.rawJson.nativeElement.focus();
-
             this.dehydrate();
         });
     }
@@ -60,6 +65,15 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         this.showTypes = !this.showTypes;
     }
 
+    selectedVersion(index: number): void {
+        clearTimeout(this.debounceBeautifyRaw);
+        clearTimeout(this.debounceVersionHistory);
+        this.checkedJson = this.versionHistory[index].json;
+        this.publishJson(this.checkedJson);
+
+        console.log(`Selected New Version from ${this.versionHistory[index].timestamp}`);
+    }
+
     private handleKeyPress(event: KeyboardEvent) {
         if (event.keyCode === 9 || event.which === 9) {
             event.preventDefault();
@@ -81,7 +95,7 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
             try {
                 this.isValid = true;
                 this.checkedJson = JSON.parse(text);
-                this.addToHistory(JSON.stringify(this.checkedJson));
+                this.addToHistoryDebounced();
 
                 this.structuredJson = this.dismantleJson({ '': this.checkedJson }, null);
                 console.log(this.structuredJson);
@@ -104,11 +118,15 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     private dehydrate(): void {
-        const jsonString: string = this.localStorage.retrieve(this.jsonHistoryKey);
-        if (jsonString && JSON.parse(jsonString)) {
-            this.rawJson.nativeElement.value = this.beautifyJson(JSON.parse(jsonString));
-            this.rawJsonChanged();
+        const latestVersion: JsonVersionHistory = this.getLatestVersionFromHistory();
+        if (latestVersion && JSON.parse(latestVersion.json)) {
+            this.publishJson(latestVersion.json);
         }
+    }
+
+    private publishJson(json: string): void {
+        this.rawJson.nativeElement.value = this.beautifyJson(JSON.parse(json));
+        this.rawJsonChanged();
     }
 
     private doCopy(text: any): void {
@@ -143,7 +161,73 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         return jsonified;
     }
 
-    private addToHistory(jsonString: string): void {
-        this.localStorage.store(this.jsonHistoryKey, jsonString);
+    private getLatestVersionFromHistory(): JsonVersionHistory {
+        this.versionHistory = this.deserialiseJsonVersionHistory(
+            this.localStorage.retrieve(this.jsonHistoryKey)
+        );
+
+        this.updateSelection();
+        return this.versionHistory[ 0 ];
+    }
+
+    private updateSelection(): void {
+        this.versionSelection = this.versionHistory.map(({ timestamp }) => new Date(timestamp).toLocaleString());
+    }
+
+    private addToHistoryDebounced(): void {
+        clearTimeout(this.debounceVersionHistory);
+
+        this.debounceVersionHistory = setTimeout(
+            () => this.executeAddToHistory(), this.versionHistoryDebounceVal);
+    }
+
+    private executeAddToHistory(): void {
+        const newEntry: string = JSON.stringify(this.checkedJson);
+
+        if (this.versionHistory.length > 0 && this.versionHistory.find((v: JsonVersionHistory) => v.json === newEntry)) {
+            return;
+        }
+
+        this.versionHistory.push(
+            new JsonVersionHistory(
+                new Date().toISOString(),
+                newEntry)
+        );
+
+        this.versionHistory
+            .sort((a: JsonVersionHistory, b: JsonVersionHistory) =>
+                new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+
+        if (this.versionHistory.length > 10) {
+            this.versionHistory.pop();
+        }
+
+        this.localStorage.store(
+            this.jsonHistoryKey,
+            this.versionHistory
+        );
+
+        this.updateSelection();
+    }
+
+    private deserialiseJsonVersionHistory(storage: any): JsonVersionHistory[] {
+        const deserialised: JsonVersionHistory[] = [];
+
+        try {
+            (storage as any[]).forEach((entry: any) => {
+                deserialised.push(
+                    new JsonVersionHistory(
+                        entry.timestamp,
+                        entry.json
+                    )
+                );
+            });
+        } catch (e) {
+            console.log(e);
+            return [];
+        }
+
+        return deserialised;
     }
 }
