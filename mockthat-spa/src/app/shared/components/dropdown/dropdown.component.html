@@ -1,4 +1,4 @@
-<div class="dropdown" [ngClass]="{'is-expanded': isExpanded}">
+<div class="dropdown" [ngClass]="{'is-expanded': isExpanded}" *ngIf="entries.length">
     <ul>
         <li *ngFor="let entry of entries; index as i;">
             <input type="radio" [value]="entry" id="entry-{{i}}"(click)="handleSelfClicked(i)" />
