@@ -24,7 +24,7 @@
             <div class="scrollable">
                 <div class="editor-result">
                     <div class="editor-numeration">
-                        <span *ngFor="let i of [].constructor(100); let row = index">{{ row }}</span>
+                        <span *ngFor="let i of [].constructor(100); let row = index">{{ row + 1 }}</span>
                     </div>
                     <ul>
                         <ng-template #recursiveList let-list>
