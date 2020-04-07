@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { JsonValidatorComponent } from './json-validator.component';
+import { RestApiComponent } from './rest-api.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    JsonValidatorComponent
+    RestApiComponent
   ],
   imports: [
     SharedModule.forRoot(),
     RouterModule.forChild([
-      { path: '', component: JsonValidatorComponent }
+      { path: '', component: RestApiComponent }
     ])
   ]
 })
-export class JsonValidatorModule { }
+export class RestApiModule { }

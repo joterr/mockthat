@@ -7,6 +7,10 @@ const routes: Routes = [
         loadChildren: () => import('./views/json-validator/json-validator.module').then(m => m.JsonValidatorModule)
     },
     {
+        path: 'rest-api',
+        loadChildren: () => import('./views/rest-api/rest-api.module').then(m => m.RestApiModule)
+    },
+    {
         path: '**',
         redirectTo: 'json-validator'
     }
