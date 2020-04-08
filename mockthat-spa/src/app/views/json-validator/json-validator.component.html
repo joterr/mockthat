@@ -7,61 +7,74 @@
                 <div class="left-frills frills"></div>
                 <div class="right-frills frills"></div>
             </div>
+            <div class="data-local">
+                <span>Whoo! You're data stays local. Always!<div class="left-frills frills"></div>
+                    <div class="right-frills frills"></div>
+                </span>
+            </div>
             <div class="version-history">
-                <app-dropdown [entries]="versionSelection" (selected)="selectedVersion($event)"></app-dropdown>
+                <app-dropdown [entries]="versionSelection" (selected)="selectedVersion($event)"
+                    actionText="Delete All Versions" (actionClicked)="deleteVersionHistory()"></app-dropdown>
             </div>
-            <textarea #rawJson contenteditable="false" spellcheck="false"></textarea>
+            <textarea #rawJson contenteditable=" false" spellcheck="false"></textarea>
+            </div>
         </div>
-    </div>
-    <div class="editor-formatted">
-        <div class="editor-formatted-controls">
-            <button type="button" class="type-switch" [class.active]="showTypes" (click)="toggleTypes()">
-                <i class="far fa-eye show-on-active"></i><i class="far fa-eye-slash hide-on-active"></i>Types</button>
-            <button type="button" class="copy-fun groupped-left" (click)="copyBeautified()">Copy Beautified</button>
-            <button type="button" class="copy-fun groupped-right" (click)="copyStringified()">Copy Stringified</button>
-        </div>
-        <section class="json-beautified" *ngIf="isValid && hasResult" [class.show-types]="showTypes">
-            <div class="scrollable">
-                <div class="editor-result">
-                    <div class="editor-numeration">
-                        <span *ngFor="let i of [].constructor(100); let row = index">{{ row + 1 }}</span>
+        <div class="editor-formatted">
+            <div class="editor-formatted-controls">
+                <button type="button" class="type-switch" [class.active]="showTypes" (click)="toggleTypes()">
+                    <i class="far fa-eye show-on-active"></i><i
+                        class="far fa-eye-slash hide-on-active"></i>Types</button>
+                <button type="button" class="copy-fun groupped-left" (click)="copyBeautified()">Copy Beautified</button>
+                <button type="button" class="copy-fun groupped-right" (click)="copyStringified()">Copy
+                    Stringified</button>
+            </div>
+            <section class="json-beautified" *ngIf="isValid && hasResult" [class.show-types]="showTypes">
+                <div class="scrollable">
+                    <div class="editor-result">
+                        <div class="editor-numeration">
+                            <span *ngFor="let i of [].constructor(500); let row = index">{{ row + 1 }}</span>
+                        </div>
+                        <ul>
+                            <ng-template #recursiveList let-list>
+                                <li *ngFor="let item of list; let i = index" class="type-{{ item.type }}"
+                                    [ngClass]="{'hide-content': !item.show, 'has-content': item.value && item.value.length}">
+                                    <span class="json-key" *ngIf="item.key"
+                                        (click)="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? item.show = !item.show : null">"{{item.key}}":&nbsp;</span><span
+                                        class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
+                                        class="json-bracket start"
+                                        *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
+                                        (click)="item.show = !item.show" class="json-bracket start"
+                                        *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
+                                    <ul
+                                        *ngIf="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT; else stringTemplate">
+                                        <ng-container
+                                            *ngTemplateOutlet="recursiveList; context:{ $implicit: item.value }">
+                                        </ng-container>
+                                    </ul>
+                                    <ng-template #stringTemplate [ngSwitch]="item.type">
+                                        <span class="json-value null" *ngSwitchCase="TYPES.NULL">null<span
+                                                class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                        <span class="json-value"
+                                            *ngSwitchCase="TYPES.BOOLEAN">{{item.value ? 'true' : 'false'}}<span
+                                                class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                        <span class="json-value" *ngSwitchCase="TYPES.STRING">"{{item.value}}"<span
+                                                class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                        <span class="json-value" *ngSwitchCase="TYPES.NUMBER">{{item.value}}<span
+                                                class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    </ng-template>
+                                    <span class="json-bracket" *ngIf="item.type === TYPES.OBJECT">{{ '}' }}<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-bracket" *ngIf="item.type === TYPES.ARRAY">{{ ']' }}<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                </li>
+                            </ng-template>
+                            <ng-container
+                                *ngTemplateOutlet="recursiveList; context: { $implicit: structuredJson, indexPar: -1 }">
+                            </ng-container>
+                        </ul>
                     </div>
-                    <ul>
-                        <ng-template #recursiveList let-list>
-                            <li *ngFor="let item of list; let i = index" [class.hide-content]="!item.show">
-                                <span class="json-key" *ngIf="item.key"
-                                    (click)="item.show = !item.show">"{{item.key}}":&nbsp;</span><span
-                                    class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
-                                    class="json-bracket start" *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
-                                    (click)="item.show = !item.show" class="json-bracket start"
-                                    *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
-                                <ul
-                                    *ngIf="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT; else stringTemplate">
-                                    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.value }">
-                                    </ng-container>
-                                </ul>
-                                <ng-template #stringTemplate [ngSwitch]="item.type">
-                                    <span class="json-value"
-                                        *ngSwitchCase="TYPES.BOOLEAN">{{item.value ? 'true' : 'false'}}<span
-                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                    <span class="json-value" *ngSwitchCase="TYPES.STRING">"{{item.value}}"<span
-                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                    <span class="json-value" *ngSwitchCase="TYPES.NUMBER">{{item.value}}<span
-                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                </ng-template>
-                                <span class="json-bracket" *ngIf="item.type === TYPES.OBJECT">{{ '}' }}<span
-                                        class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                <span class="json-bracket" *ngIf="item.type === TYPES.ARRAY">{{ ']' }}<span
-                                        class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                            </li>
-                        </ng-template>
-                        <ng-container
-                            *ngTemplateOutlet="recursiveList; context: { $implicit: structuredJson, indexPar: -1 }">
-                        </ng-container>
-                    </ul>
                 </div>
-            </div>
-        </section>
-        <textarea id="shadowedTextarea" #shadowedTextarea></textarea>
+            </section>
+            <textarea id="shadowedTextarea" #shadowedTextarea></textarea>
+        </div>
     </div>
-</div>

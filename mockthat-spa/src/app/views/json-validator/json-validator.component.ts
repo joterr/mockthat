@@ -74,6 +74,13 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         console.log(`Selected New Version from ${this.versionHistory[index].timestamp}`);
     }
 
+    deleteVersionHistory(): void {
+        this.localStorage.clear(this.jsonHistoryKey);
+        this.rawJson.nativeElement.value = '';
+        this.hasResult = this.isValid = false;
+        this.structuredJson = this.versionHistory = this.versionSelection = [];
+    }
+
     private handleKeyPress(event: KeyboardEvent) {
         if (event.keyCode === 9 || event.which === 9) {
             event.preventDefault();
@@ -141,19 +148,20 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         const jsonified = [];
 
         keys.forEach((key) => {
+            const isNull = layer[ key ] === null;
             const isString = typeof layer[ key ] === 'string';
             const isBoolean = typeof layer[ key ] === 'boolean';
             const isNumber = typeof layer[ key ] === 'number';
             const isArray = Array.isArray(layer[ key ]);
 
-            const type: Types = isNumber ? Types.NUMBER : isBoolean ? Types.BOOLEAN :
+            const type: Types = isNull ? Types.NULL : isNumber ? Types.NUMBER : isBoolean ? Types.BOOLEAN :
                 isString ? Types.STRING : isArray ? Types.ARRAY : Types.OBJECT;
 
             jsonified.push(
                 new JsonType(
                     parType && parType !== Types.ARRAY ? key : null,
                     type,
-                    isString || isNumber || isBoolean ? layer[ key ] : this.dismantleJson(layer[ key ], type)
+                    isNull || isString || isNumber || isBoolean ? layer[ key ] : this.dismantleJson(layer[ key ], type)
                 )
             );
         });
@@ -224,7 +232,6 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
                 );
             });
         } catch (e) {
-            console.log(e);
             return [];
         }
 

@@ -1,4 +1,5 @@
 export enum Types {
+    NULL = 'null',
     STRING = 'string',
     NUMBER = 'number',
     BOOLEAN = 'boolean',

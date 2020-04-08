@@ -1,19 +1,5 @@
 @import "../../../styles.scss";
 
-$element-height-complete: 1.8rem;
-$frill-vert-space: 1rem;
-$frill-horizontal-offset: 1.2rem;
-$frill-distance: 0.6rem;
-$frill-stagger: 0.4rem;
-
-$frill-rotation: 40deg;
-$frill-height: 0.1rem;
-$frill-width: 1rem;
-
-$speed: 0.32s;
-$timing-function: ease-out;
-$delay: 0.32s;
-
 .editor {
     position: relative;
     z-index: 999;
@@ -54,6 +40,25 @@ $delay: 0.32s;
             transition: 300ms ease background-color;
             background-color: rgb(255, 255, 255, 0.15);
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .data-local {
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            bottom: 1.3rem;
+            text-align: center;
+
+            span {
+                display: inline-block;
+                position: relative;
+                @include std-text-boldest();
+                color: #fff;
+                opacity: 0.65;
+                font-size: small;
+                text-shadow: 0 0 3px rgba(0, 0, 0, 0.65);
+            }
         }
 
         .version-history {
@@ -102,7 +107,7 @@ $delay: 0.32s;
             resize: none;
             padding: 0.5rem;
             @include std-text-mono();
-            font-size: .7rem;
+            font-size: .725rem;
             height: 100%;
             max-height: 100%;
             width: 100%;
@@ -189,11 +194,11 @@ $delay: 0.32s;
                     0% {
                         opacity: 1;
                     }
-                
+
                     25% {
                         color: $color-highlight;
                     }
-                
+
                     100% {
                         opacity: 1;
                         top: -3rem;
@@ -263,7 +268,7 @@ $delay: 0.32s;
             top: 0;
             left: 0;
             text-align: right;
-            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            border-right: 1px solid rgba(255, 255, 255, 0.4);
             padding-right: 0.5rem;
             line-height: 150%;
 
@@ -285,12 +290,39 @@ $delay: 0.32s;
         &>* {
             color: #d7c3fb;
             @include std-text-mono();
-            font-size: .7rem;
+            font-size: .725rem;
             line-height: 150%;
         }
 
         ul li {
             list-style-type: none;
+            position: relative;
+
+            &.type-object,
+            &.type-array {
+                &:not(.has-content) {
+                    &>.json-bracket {
+                        display: inline-block;
+                    }
+
+                    &>ul {
+                        display: none;
+                    }
+                }
+
+                &:hover:after {
+                    content: "";
+                    position: absolute;
+                    border-left: 1px solid rgba(255, 255, 255, 0.2);
+                    left: 0.25rem;
+                    top: 1rem;
+                    bottom: 1rem;
+                }
+
+                &>span.json-key {
+                    cursor: pointer;
+                }
+            }
         }
 
         ul {
@@ -322,6 +354,10 @@ $delay: 0.32s;
 
             &.object:after {
                 content: "OBJECT";
+            }
+
+            &.null:after {
+                display: none;
             }
 
             &.boolean:after {
@@ -396,6 +432,21 @@ $delay: 0.32s;
     }
 }
 
+$element-height-complete: 1.8rem;
+$element-height-complete-local: 1rem;
+$frill-vert-space: 1rem;
+$frill-horizontal-offset: 1.2rem;
+$frill-distance: 0.6rem;
+$frill-stagger: 0.4rem;
+
+$frill-rotation: 40deg;
+$frill-height: 0.1rem;
+$frill-width: 1rem;
+
+$speed: 0.32s;
+$timing-function: ease-out;
+$delay: 0.32s;
+$delay-local: 1s;
 
 .frills,
 .frills:after,
@@ -487,6 +538,46 @@ $delay: 0.32s;
 .right-frills:before {
     transform: rotate(-$frill-rotation);
 }
+
+
+.data-local {
+
+    .left-frills,
+    .right-frills {
+        top: ($element-height-complete-local/2)- ($frill-height/2);
+    }
+
+    .left-frills {
+        animation: move-left $speed $timing-function $delay-local,
+            width-to-zero $speed $timing-function $delay-local;
+
+        &:before {
+            animation: width-to-zero $speed $timing-function $delay-local,
+                move-up $speed $timing-function $delay-local;
+        }
+
+        &:after {
+            animation: width-to-zero $speed $timing-function $delay-local,
+                move-down $speed $timing-function $delay-local;
+        }
+    }
+
+    .right-frills {
+        animation: move-right $speed $timing-function $delay-local,
+            width-to-zero $speed $timing-function $delay-local;
+
+        &:before {
+            animation: width-to-zero $speed $timing-function $delay-local,
+                move-up $speed $timing-function $delay-local;
+        }
+
+        &:after {
+            animation: width-to-zero $speed $timing-function $delay-local,
+                move-down $speed $timing-function $delay-local;
+        }
+    }
+}
+
 
 
 @keyframes move-left {

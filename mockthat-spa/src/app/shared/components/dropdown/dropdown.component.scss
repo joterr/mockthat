@@ -16,7 +16,7 @@
 
         span {
             display: inline-block;
-            margin-right: 0.65rem;
+            margin-left: 0.5rem;
             @include std-text-boldest();
         }
     }
@@ -40,6 +40,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            z-index: -1;
             background-color: $color-editor;
             opacity: 0.75;
         }
@@ -47,6 +48,7 @@
         li {
             list-style-type: none;
             background-color: transparent;
+            padding-left: 1.4rem;
 
             input {
                 width: 1px;
@@ -71,9 +73,43 @@
                 }
             }
         }
+
+        &.action {
+            &:after {
+                background-color: transparent;
+            }
+
+            li {
+                padding-top: 0.25rem;
+                padding-bottom: 0.25rem;
+    
+                button {
+                    cursor: pointer;
+                    color: #fff;
+                    border: 0;
+                    background-color: transparent;
+                    @include std-text-boldest();
+    
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        &.list {
+            padding-top: 0.25rem;
+
+            li:first-child {
+                display: none;
+            }
+        }
     }
 
-    &.is-expanded ul {
-        display: block;
+
+    &.is-expanded {
+        ul {
+            display: block;
+        }
     }
 }
