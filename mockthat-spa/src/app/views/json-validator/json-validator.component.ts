@@ -75,6 +75,8 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     deleteVersionHistory(): void {
+        clearTimeout(this.debounceBeautifyRaw);
+        clearTimeout(this.debounceVersionHistory);
         this.localStorage.clear(this.jsonHistoryKey);
         this.rawJson.nativeElement.value = '';
         this.hasResult = this.isValid = false;
