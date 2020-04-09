@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderNavComponent } from './header-nav.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderNavComponent', () => {
   let component: HeaderNavComponent;
@@ -8,6 +9,9 @@ describe('HeaderNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+        imports: [
+            RouterTestingModule
+        ],
       declarations: [ HeaderNavComponent ]
     })
     .compileComponents();
