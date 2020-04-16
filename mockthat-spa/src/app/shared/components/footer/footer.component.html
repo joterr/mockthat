@@ -1,7 +1,7 @@
 <footer>
     <ul>
-        <li (click)="togglePrivacy()">Data Privacy</li>
-        <li (click)="toggleLegalNotice()">Impressum – Legal Notice</li>
+        <li class="privacy" (click)="togglePrivacy()">Data Privacy</li>
+        <li class="legal" (click)="toggleLegalNotice()">Impressum – Legal Notice</li>
     </ul>
 </footer>
 <section class="static-page privacy" *ngIf="showPrivacy">

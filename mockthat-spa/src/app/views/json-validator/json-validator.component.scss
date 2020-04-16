@@ -135,125 +135,19 @@
 
     .editor-formatted-controls {
         position: absolute;
-        top: 1.5rem;
+        top: 1.25rem;
         right: 1.5rem;
         z-index: 999;
         background-color: rgba(255, 255, 255, 0.2);
         padding: 0.25rem;
         border-radius: 0.05rem;
 
-        button {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            margin: 0 0.25rem;
-            background-color: $color-highlight;
-            border: none;
-            outline: none;
-            @include std-text-boldest();
-            font-size: small;
-            color: $color-editor;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.05rem;
-            transition: 300ms ease background-color;
-            border: 1px solid transparent;
+        .wrapper {
+            margin: 0 -.125rem;
 
-            &:first-child {
-                margin-left: 0;
-            }
-
-            &:last-child {
-                margin-right: 0;
-            }
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.85);
-            }
-
-            &:active {
-                transform: scale(0.95);
-            }
-
-            &.copy-fun {
-                &:after {
-                    opacity: 0;
-                    content: "copied!";
-                    text-transform: uppercase;
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    padding: 0.25rem 0.5rem;
-                    @include std-text-boldest();
-                    font-size: medium;
-                    color: $color-editor;
-                }
-
-                @keyframes fly-away {
-                    0% {
-                        opacity: 1;
-                    }
-
-                    25% {
-                        color: $color-highlight;
-                    }
-
-                    100% {
-                        opacity: 1;
-                        top: -3rem;
-                    }
-                }
-
-                &:active {
-                    color: transparent;
-
-                    &:after {
-                        opacity: 1;
-                        animation: fly-away ease 0.1s;
-                    }
-                }
-            }
-
-            &.groupped-left {
-                margin-right: 0.125rem;
-            }
-
-            &.groupped-right {
-                margin-left: 0.125rem;
-            }
-
-            &.type-switch {
-                .show-on-active {
-                    display: none;
-                }
-
-                &.active {
-                    background-color: rgba(255, 255, 255, 1);
-
-                    .show-on-active {
-                        display: inline-block;
-                    }
-
-                    .hide-on-active {
-                        display: none;
-                    }
-                }
-
-                &:not(.active) {
-                    background-color: rgba(255, 255, 255, 0);
-                    border: 1px solid #fff;
-                    color: #fff;
-
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.25);
-                    }
-                }
-            }
-
-            i {
-                margin-right: 0.3rem;
-                width: 16px;
+            .groupped {
+                display: inline-block;
+                margin-left: 0.25rem;
             }
         }
     }
@@ -297,6 +191,27 @@
         ul li {
             list-style-type: none;
             position: relative;
+
+            &.type-array {
+                & > ul > li.type-object:hover:before,
+                & > ul > li.type-null:hover:before,
+                & > ul > li.type-string:hover:before,
+                & > ul > li.type-number:hover:before {
+                    content: "";
+                    position: absolute;
+                    left: calc(-50px - 0.25rem);
+                    opacity: 0.5;
+                    display: block;
+                    width: 50px;
+                    text-align: right;
+                }
+
+                @for $i from 1 through 100 {
+                    & > ul > li:nth-child(#{$i}):hover:before {
+                        content: "#{$i - 1}";
+                    }
+                  }
+            }
 
             &.type-object,
             &.type-array {

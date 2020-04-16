@@ -1,4 +1,4 @@
-<div class="dropdown" [ngClass]="{'is-expanded': isExpanded}" *ngIf="entries.length">
+<div class="dropdown" [ngClass]="{'is-expanded': isExpanded}" *ngIf="entries && entries.length">
     <ul class="action">
         <li  *ngIf="actionText">
             <button type="button" (click)="actionCallback()">{{ actionText }}</button>
