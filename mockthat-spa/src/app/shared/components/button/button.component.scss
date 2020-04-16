@@ -1,0 +1,91 @@
+@import "../../../../styles.scss";
+
+.button-wrapper {
+    display: inline-block;
+    position: relative;
+
+    .micro-feedback-action {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        @include std-text-boldest();
+
+        animation: fly-away ease 0.4s;
+        opacity: 0;
+
+        @keyframes fly-away {
+            0% {
+                opacity: 1;
+            }
+
+            25% {
+                color: $color-highlight;
+            }
+
+            100% {
+                opacity: 1;
+                top: -2rem;
+            }
+        }
+    }
+
+    button {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0 0.125rem;
+        background-color: $color-highlight;
+        border: none;
+        outline: none;
+        @include std-text-boldest();
+        font-size: small;
+        color: $color-editor;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.1rem;
+        transition: 300ms ease background-color;
+        border: 1px solid transparent;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &.toggle-visibility {
+            .show-on-active {
+                display: none;
+            }
+
+            &.active {
+                background-color: rgba(255, 255, 255, 1);
+
+                .show-on-active {
+                    display: inline-block;
+                }
+
+                .hide-on-active {
+                    display: none;
+                }
+            }
+
+            &:not(.active) {
+                background-color: rgba(255, 255, 255, 0);
+                border: 1px solid #fff;
+                color: #fff;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.25);
+                }
+            }
+        }
+
+        i {
+            margin-right: 0.3rem;
+            width: 16px;
+        }
+    }
+}

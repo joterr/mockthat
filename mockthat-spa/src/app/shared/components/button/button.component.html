@@ -1,0 +1,6 @@
+<div class="button-wrapper">
+    <div class="micro-feedback-action" *ngIf="showMicroFeedback$ | async">{{ feedbackText }}</div>
+    <button type="button" [ngClass]="type" [class.active]="active" (click)="triggerAction()">
+        <i *ngIf="enabledIcon" class="{{ enabledIcon }} show-on-active"></i><i *ngIf="disabledIcon"
+            class="{{ disabledIcon }} hide-on-active"></i>{{ text }}</button>
+</div>
