@@ -11,20 +11,32 @@ footer {
         text-align: center;
 
         li {
-            cursor: pointer;
-            padding: 0 1rem;
-            font-size: x-small;
-            opacity: 0.5;
-            @include std-text-bold();
             display: inline-block;
-            color: #fff;
             list-style-type: none;
-            transition: 300ms ease;
 
-            &:hover {
-                text-decoration: underline;
-                opacity: 1;
+            a {
+                padding: 0 0.75rem;
+                font-size: x-small;
+                opacity: 0.4;
+                @include std-text-bold();
+                color: #fff;
+                transition: 300ms ease;
+                text-decoration: none;
+
+                &.coffee {
+                    opacity: 0.65;
+
+                    i {
+                        padding-left: 0.25rem;
+                    }
+                }
+
+                &:hover {
+                    text-decoration: underline;
+                    opacity: 1;
+                }
             }
+
         }
     }
 }
@@ -41,11 +53,11 @@ footer {
     color: #fff;
 
     @include respond-to('small') {
-        padding: 6vh 8vw; 
+        padding: 6vh 8vw;
     }
 
     @include respond-to('medium') {
-        padding: 8vh 22vw; 
+        padding: 8vh 22vw;
     }
 
     .scrollable {
