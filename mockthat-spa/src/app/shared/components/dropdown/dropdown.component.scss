@@ -100,8 +100,8 @@
         &.list {
             padding-top: 0.25rem;
 
-            li:first-child {
-                display: none;
+            li.active {
+                opacity: 0.35;
             }
         }
     }
