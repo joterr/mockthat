@@ -1,6 +1,6 @@
 {
   "name": "mockthat-spa",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 8765",
@@ -23,6 +23,7 @@
     "normalize.css": "^8.0.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "url-regex": "^5.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

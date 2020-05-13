@@ -1,6 +1,7 @@
 export enum Types {
     NULL = 'null',
     STRING = 'string',
+    URL = 'url',
     NUMBER = 'number',
     BOOLEAN = 'boolean',
     ARRAY = 'array',

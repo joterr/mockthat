@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit, Typ
 import { JsonType, Types, JsonVersionHistory } from './json-validator.model';
 import { Subscription, fromEvent } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
+import * as urlRegex from 'url-regex';
 
 @Component({
     selector: 'app-json-validator',
@@ -68,10 +69,10 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     selectedVersion(index: number): void {
         clearTimeout(this.debounceBeautifyRaw);
         clearTimeout(this.debounceVersionHistory);
-        this.checkedJson = this.versionHistory[index].json;
+        this.checkedJson = this.versionHistory[ index ].json;
         this.publishJson(this.checkedJson);
 
-        console.log(`Selected New Version from ${this.versionHistory[index].timestamp}`);
+        console.log(`Selected New Version from ${this.versionHistory[ index ].timestamp}`);
     }
 
     deleteVersionHistory(): void {
@@ -157,13 +158,13 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
             const isArray = Array.isArray(layer[ key ]);
 
             const type: Types = isNull ? Types.NULL : isNumber ? Types.NUMBER : isBoolean ? Types.BOOLEAN :
-                isString ? Types.STRING : isArray ? Types.ARRAY : Types.OBJECT;
+                isString ? (urlRegex().test(layer[ key ]) ? Types.URL : Types.STRING) : isArray ? Types.ARRAY : Types.OBJECT;
 
             jsonified.push(
                 new JsonType(
                     parType && parType !== Types.ARRAY ? key : null,
                     type,
-                    isNull || isString || isNumber || isBoolean ? layer[ key ] : this.dismantleJson(layer[ key ], type)
+                    isNull || isString || isNumber || isBoolean ? layer[ key ] : this.dismantleJson(layer[ key ], type)
                 )
             );
         });
