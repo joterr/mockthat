@@ -300,6 +300,15 @@
 
         .json-value {
             color: #BBAC38;
+
+            a {
+                color: #BBAC38;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
 
         .json-commata {

@@ -62,6 +62,9 @@
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.STRING">"{{item.value}}"<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-value" *ngSwitchCase="TYPES.URL">"<a [href]="item.value"
+                                            target="_blanc">{{item.value}}</a>"<span class="json-commata"
+                                            *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.NUMBER">{{item.value}}<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                 </ng-template>
