@@ -290,6 +290,10 @@
             &.string:after {
                 content: "STRING";
             }
+
+            &.url:after {
+                content: "URL";
+            }
         }
 
         &.show-types {
