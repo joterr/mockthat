@@ -10,7 +10,7 @@ import { debounceTime, mapTo } from 'rxjs/operators';
 })
 export class ButtonComponent implements OnInit {
 
-    @Input() level: ButtonLevel;
+    @Input() level: ButtonLevel = ButtonLevel.FIRST;
     @Input() type: ButtonType = null;
     @Input() active: boolean;
     @Input() text: string;
@@ -18,7 +18,7 @@ export class ButtonComponent implements OnInit {
 
     @Output() action: EventEmitter<null> = new EventEmitter<null>();
 
-    enabledIcon: string;
+    stdIcon: string;
     disabledIcon: string;
     showMicroFeedback$: Observable<boolean>;
 
@@ -42,8 +42,17 @@ export class ButtonComponent implements OnInit {
     private setIcons(): void {
         switch (this.type) {
             case ButtonType.TOGGLE_VISIBILITY:
-                this.enabledIcon = 'far fa-eye';
+                this.stdIcon = 'far fa-eye';
                 this.disabledIcon = 'far fa-eye-slash';
+                break;
+            case ButtonType.SORT_UP:
+                this.stdIcon = 'fas fa-sort-alpha-up';
+                break;
+            case ButtonType.SORT_DOWN:
+                this.stdIcon = 'fas fa-sort-alpha-down';
+                break;
+            case ButtonType.TRASH_ALT:
+                this.stdIcon = 'far fa-trash-alt';
                 break;
         }
     }

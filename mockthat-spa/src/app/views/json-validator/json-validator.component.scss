@@ -155,6 +155,7 @@
     .editor-result {
         position: relative;
         padding-left: 0.5rem;
+        padding-bottom: 1rem;
         overflow-y: hidden;
 
         .editor-numeration {
@@ -192,11 +193,36 @@
             list-style-type: none;
             position: relative;
 
+            &.one-line-value {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                .node-actions, .value-action {
+                    position: absolute;
+                    right: 1rem;
+                }
+            }
+
+            .json-header {
+                display: inline-block;
+
+                .node-actions {
+                    display: none;
+                    margin-left: 0.25rem;
+                }
+
+                &:hover>.node-actions {
+                    display: inline-block;
+                }
+            }
+
             &.type-array {
-                & > ul > li.type-object:hover:before,
-                & > ul > li.type-null:hover:before,
-                & > ul > li.type-string:hover:before,
-                & > ul > li.type-number:hover:before {
+
+                &>ul>li.type-object:hover:before,
+                &>ul>li.type-null:hover:before,
+                &>ul>li.type-string:hover:before,
+                &>ul>li.type-number:hover:before {
                     content: "";
                     position: absolute;
                     left: calc(-50px - 0.25rem);
@@ -207,14 +233,18 @@
                 }
 
                 @for $i from 1 through 100 {
-                    & > ul > li:nth-child(#{$i}):hover:before {
+                    &>ul>li:nth-child(#{$i}):hover:before {
                         content: "#{$i - 1}";
                     }
-                  }
+                }
             }
 
             &.type-object,
             &.type-array {
+                &:not(.hide-content) > .json-header {
+                    width: 100%;
+                }
+
                 &:not(.has-content) {
                     &>.json-bracket {
                         display: inline-block;
@@ -234,8 +264,18 @@
                     bottom: 1rem;
                 }
 
-                &>span.json-key {
+                &>.json-header>span.json-key {
                     cursor: pointer;
+                }
+            }
+
+            .value-action {
+                display: none;
+            }
+
+            &:not(.type-array):not(.type-object):hover {
+                .value-action {
+                    display: inline-block;
                 }
             }
         }
@@ -257,12 +297,11 @@
 
             &:after {
                 content: "";
-                color: $color-editor;
-                background-color: #fff;
+                color: #fff;
                 font-size: x-small;
                 line-height: 110%;
                 padding: 0 0.1rem;
-                margin: 0.25rem 0.5rem 0 0;
+                margin: 0.25rem 0.25rem 0 0;
                 @include std-text-boldest();
                 border-radius: 0.1rem;
             }
@@ -291,6 +330,10 @@
                 content: "STRING";
             }
 
+            &.data_base64:after {
+                content: "DATA:BASE64";
+            }
+
             &.url:after {
                 content: "URL";
             }
@@ -299,6 +342,15 @@
         &.show-types {
             .json-type {
                 display: inline-block;
+            }
+        }
+
+        .copy-value {
+            transition: opacity 400ms ease;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.65;
             }
         }
 
@@ -347,7 +399,7 @@
                 }
             }
 
-            &>*:not(.json-bracket):not(.json-key):not(.json-type) {
+            &>* {
                 display: none;
             }
         }

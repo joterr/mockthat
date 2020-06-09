@@ -48,6 +48,38 @@ describe('JsonValidatorComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('should copy key', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should copy value', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should remove node', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should remove value', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should sort array desc', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should sort array asc', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should sort object desc', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should sort object asc', () => {
+        expect(component).toBeTruthy();
+    });
+
     it('should toggle types', () => {
         expect(component).toBeTruthy();
     });

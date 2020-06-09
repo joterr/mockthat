@@ -42,13 +42,28 @@
                     <ul>
                         <ng-template #recursiveList let-list>
                             <li *ngFor="let item of list; let i = index" class="type-{{ item.type }}"
-                                [ngClass]="{'hide-content': !item.show, 'has-content': item.value && item.value.length}">
-                                <span class="json-key" *ngIf="item.key"
-                                    (click)="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? item.show = !item.show : null">"{{item.key}}":&nbsp;</span><span
-                                    class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
-                                    class="json-bracket start" *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
-                                    (click)="item.show = !item.show" class="json-bracket start"
-                                    *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
+                                [ngClass]="{'hide-content': !item.show, 'has-content': item.value && item.value.length, 'one-line-value': item.value.length > 500}">
+                                <div class="json-header">
+                                    <span class="json-key" *ngIf="item.key"
+                                        (click)="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? item.show = !item.show : null">"<span class="copy-value" title="Click to copy value" (click)="copyValue(item.value)">{{item.key}}</span>":&nbsp;</span><span
+                                        class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
+                                        class="json-bracket start"
+                                        *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
+                                        (click)="item.show = !item.show" class="json-bracket start"
+                                        *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
+                                    <span class="node-actions"
+                                        *ngIf="(item.type === TYPES.OBJECT || item.type === TYPES.ARRAY) && item.show">
+                                        <app-button level="inline" type="sort-up" (action)="sortNode(item.id)"
+                                            text="Sort ASC">
+                                        </app-button>
+                                        <app-button level="inline" type="sort-down" (action)="sortNode(item.id, false)"
+                                            text="Sort DESC">
+                                        </app-button>
+                                        <app-button class="remove margin-left-small" level="inline" type="trash-alt"
+                                            (action)="removeNode(item.id)" text="Remove">
+                                        </app-button>
+                                    </span>
+                                </div>
                                 <ul
                                     *ngIf="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT; else stringTemplate">
                                     <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.value }">
@@ -60,13 +75,20 @@
                                     <span class="json-value"
                                         *ngSwitchCase="TYPES.BOOLEAN">{{item.value ? 'true' : 'false'}}<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                    <span class="json-value" *ngSwitchCase="TYPES.STRING">"{{item.value}}"<span
+                                    <span class="json-value" *ngSwitchCase="TYPES.STRING">"<span class="copy-value" title="Click to copy value" (click)="copyValue(item.value)">{{item.value}}</span>"<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-value" *ngSwitchCase="TYPES.DATA_BASE64">"<span class="copy-value" title="Click to copy value" (click)="copyValue(item.value)">{{item.value}}</span>"<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.URL">"<a [href]="item.value"
                                             target="_blanc">{{item.value}}</a>"<span class="json-commata"
                                             *ngIf="i !== (list.length - 1)">,</span></span>
-                                    <span class="json-value" *ngSwitchCase="TYPES.NUMBER">{{item.value}}<span
+                                    <span class="json-value" *ngSwitchCase="TYPES.NUMBER"><span class="copy-value" title="Click to copy value" (click)="copyValue(item.value)">{{item.value}}</span><span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="value-action">
+                                        <app-button class="remove margin-left-small" level="inline" type="trash-alt"
+                                            (action)="removeNode(item.id)" text="Remove">
+                                        </app-button>
+                                    </span>
                                 </ng-template>
                                 <span class="json-bracket" *ngIf="item.type === TYPES.OBJECT">{{ '}' }}<span
                                         class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
