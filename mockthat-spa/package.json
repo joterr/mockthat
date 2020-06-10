@@ -1,6 +1,6 @@
 {
   "name": "mockthat-spa",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 8765",

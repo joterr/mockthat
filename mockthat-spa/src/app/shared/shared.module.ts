@@ -6,13 +6,15 @@ import { HeaderNavComponent } from './components/header-nav/header-nav.component
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './components/button/button.component';
+import { LongPressDirective } from './directives/long-press.directive';
 
 @NgModule({
     declarations: [
         HeaderNavComponent,
         FooterComponent,
         DropdownComponent,
-        ButtonComponent
+        ButtonComponent,
+        LongPressDirective
     ],
     exports: [
         CommonModule,
@@ -21,7 +23,8 @@ import { ButtonComponent } from './components/button/button.component';
         HeaderNavComponent,
         ButtonComponent,
         FooterComponent,
-        DropdownComponent
+        DropdownComponent,
+        LongPressDirective
     ],
     imports: [
         CommonModule,
