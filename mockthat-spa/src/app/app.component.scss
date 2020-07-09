@@ -4,6 +4,14 @@ div {
     width: 86vw;
     margin: 0 auto;
 
+    @include respond-to('x-large') {
+        width: 90vw;
+    }
+
+    @include respond-to('large') {
+        width: 96vw;
+    }
+
     @include respond-to('small') {
         width: 98vw;
     }

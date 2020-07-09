@@ -45,6 +45,10 @@ export class ButtonComponent implements OnInit {
                 this.stdIcon = 'far fa-eye';
                 this.disabledIcon = 'far fa-eye-slash';
                 break;
+            case ButtonType.TOGGLE_FOLD_STATE:
+                this.stdIcon = 'fas fa-plus';
+                this.disabledIcon = 'fas fa-minus';
+                break;
             case ButtonType.SORT_UP:
                 this.stdIcon = 'fas fa-sort-alpha-up';
                 break;

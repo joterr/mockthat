@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MomentModule } from 'ngx-moment';
 import { FooterComponent } from './components/footer/footer.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { HeaderNavComponent } from './components/header-nav/header-nav.component';
@@ -29,7 +30,8 @@ import { LongPressDirective } from './directives/long-press.directive';
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        MomentModule
     ]
 })
 export class SharedModule {

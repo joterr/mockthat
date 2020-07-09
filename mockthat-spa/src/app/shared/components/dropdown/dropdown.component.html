@@ -1,17 +1,17 @@
 <div class="dropdown" [ngClass]="{'is-expanded': isExpanded}" *ngIf="entries && entries.length">
     <ul class="action">
-        <li  *ngIf="actionText">
+        <li *ngIf="actionText">
             <button type="button" (click)="actionCallback()">{{ actionText }}</button>
         </li>
     </ul>
     <div class="current-selected" (click)="isExpanded = !isExpanded">
         <i class="fas fa-bars"></i>
-        <span>{{ entries[selectedIndex] }}</span>
+        <span>{{ entries[selectedIndex] | amCalendar }}</span>
     </div>
     <ul class="list" *ngIf="entries && entries.length > 1">
         <li *ngFor="let entry of entries; index as i;" [class.active]="selectedIndex === i">
-            <input type="radio" [value]="entry" id="entry-{{i}}"  (click)="handleSelfClicked(i)" />
-            <label for="entry-{{i}}">{{ entry }}</label>
+            <input type="radio" [value]="entry" id="entry-{{i}}" (click)="handleSelfClicked(i)" />
+            <label for="entry-{{i}}">{{ entry | amCalendar }}</label>
         </li>
     </ul>
 </div>

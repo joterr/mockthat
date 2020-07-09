@@ -10,14 +10,22 @@ export enum Types {
 }
 
 export class JsonType {
+    show: boolean;
+
     constructor(
         public id: string,
         public key: string | number | null,
         public type: Types,
         public value: JsonType[] | string,
-        public show: boolean = true,
+        show: boolean = true,
         public remove: boolean = false
-    ) { }
+    ) {
+        this.setShowState(show);
+    }
+
+    setShowState(show: boolean): void {
+        this.show = (this.type === Types.OBJECT || this.type === Types.ARRAY) ? show : true;
+    }
 }
 
 export class JsonVersionHistory {

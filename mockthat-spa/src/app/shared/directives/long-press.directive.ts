@@ -51,6 +51,7 @@ export class LongPressDirective implements OnInit {
     onClick(event: MouseEvent): void {
         if (this.isLongClick) {
             event.stopPropagation();
+            event.preventDefault();
         }
         this.isLongClick = false;
     }
@@ -64,10 +65,10 @@ export class LongPressDirective implements OnInit {
         this.longPress.emit();
         this.isLongClick = true;
 
-        this.style = this.sanitizer.bypassSecurityTrustStyle('opacity: 0.15');
+        this.style = this.sanitizer.bypassSecurityTrustStyle('opacity: 0.1');
 
         setTimeout(() => {
             this.style = '';
-        }, 250);
+        }, 200);
     }
 }

@@ -19,12 +19,16 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     hasResult: boolean;
 
     showTypes: boolean;
+    allCollapsed: boolean;
+    isEditorSpaceOpen: boolean;
 
     structuredJson: JsonType[] = [];
     checkedJson = '';
     versionHistory: JsonVersionHistory[] = [];
 
     versionSelection: string[] = [];
+    editorNumerationCount = 0;
+    isJsonParsing = true;
 
     readonly TYPES = Types;
 
@@ -58,6 +62,14 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         this.subCollector.forEach((s: Subscription) => s.unsubscribe());
     }
 
+    changeIsEditorSpaceOpen(openOnly: boolean, event?: MouseEvent): void {
+        this.isEditorSpaceOpen = openOnly ? true : !this.isEditorSpaceOpen;
+
+        if (event) {
+            event.stopPropagation();
+        }
+    }
+
     copyBeautified(): void {
         this.doCopy(JSON.stringify(this.checkedJson, null, '\t'));
     }
@@ -74,7 +86,15 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         this.showTypes = !this.showTypes;
     }
 
+    toggleFoldState(): void {
+        this.allCollapsed = !this.allCollapsed;
+
+        this.recursiveManipulateViewState(this.structuredJson, !this.allCollapsed);
+        this.structuredJson[ 0 ].setShowState(true);
+    }
+
     selectedVersion(index: number): void {
+        this.isJsonParsing = true;
         clearTimeout(this.debounceBeautifyRaw);
         clearTimeout(this.debounceVersionHistory);
         this.checkedJson = this.versionHistory[ index ].json;
@@ -93,32 +113,49 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     sortNode(id: string, ascending = true): void {
-        const part: JsonType = this.findJsonPartById(this.structuredJson, id);
+        this.isJsonParsing = true;
+        setTimeout(() => {
+            const part: JsonType = this.findJsonPartById(this.structuredJson, id);
 
-        if (part.type === Types.OBJECT) {
-            part.value = orderBy(
-                part.value as JsonType[],
-                [ v => v.key ],
-                [ ascending ? 'asc' : 'desc' ]
-            );
-        } else if (part.type === Types.ARRAY) {
-            part.value = orderBy(
-                part.value as JsonType[],
-                [ v => v.value ],
-                [ ascending ? 'asc' : 'desc' ]
-            );
-        }
+            if (part.type === Types.OBJECT) {
+                part.value = orderBy(
+                    part.value as JsonType[],
+                    [ v => v.key ],
+                    [ ascending ? 'asc' : 'desc' ]
+                );
+            }
 
-        const stringifiedJson: string = JSON.stringify(this.buildJson(this.structuredJson));
-        this.publishJson(stringifiedJson);
+            this.publishJson(
+                JSON.stringify(
+                    this.buildJson(this.structuredJson, true)
+                )
+            );
+        });
     }
 
     removeNode(id: string): void {
-        const part: JsonType = this.findJsonPartById(this.structuredJson, id);
-        part.remove = true;
+        this.isJsonParsing = true;
+        setTimeout(() => {
+            const part: JsonType = this.findJsonPartById(this.structuredJson, id);
+            part.remove = true;
 
-        const stringifiedJson: string = JSON.stringify(this.buildJson(this.structuredJson));
-        this.publishJson(stringifiedJson);
+            const stringifiedJson: string = JSON.stringify(this.buildJson(this.structuredJson, true));
+            this.publishJson(stringifiedJson);
+        });
+    }
+
+    private calcEditorNumerationCount(json: string): void {
+        this.editorNumerationCount = (JSON.stringify(json, null, '\t').match(/\n/g) || []).length + 1;
+    }
+
+    private recursiveManipulateViewState(json: JsonType[], show: boolean): void {
+        json.forEach((j: JsonType) => {
+            j.setShowState(show);
+
+            if (j.value instanceof Object && j.value[ 0 ] instanceof JsonType) {
+                this.recursiveManipulateViewState(j.value as JsonType[], show);
+            }
+        });
     }
 
     private findJsonPartById(jsonTypes: JsonType[], id: string): JsonType {
@@ -144,34 +181,40 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     private rawJsonChanged(): void {
+        this.isJsonParsing = true;
         const text: string = this.rawJson.nativeElement.value;
         this.hasResult = !!text;
 
         clearTimeout(this.debounceBeautifyRaw);
 
         // TO DO: Optimise RegEx
-        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
-            replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-            replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+        setTimeout(() => {
+            if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
+                replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+                replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
-            try {
-                this.isValid = true;
-                this.checkedJson = JSON.parse(text);
-                this.addToHistoryDebounced();
+                try {
+                    this.isValid = true;
+                    this.checkedJson = JSON.parse(text);
+                    this.addToHistoryDebounced();
 
-                this.structuredJson = this.dismantleJson({ '': this.checkedJson }, null);
-                console.log(this.structuredJson);
+                    this.structuredJson = this.dismantleJson({ '': this.checkedJson }, null);
+                    this.calcEditorNumerationCount(this.checkedJson);
+                    console.log(this.structuredJson);
 
-                this.debounceBeautifyRaw = setTimeout(() => this.rawJson.nativeElement.value = this.beautifyJson(this.checkedJson), 300);
-            } catch (e) {
+                    this.debounceBeautifyRaw = setTimeout(
+                        () => this.rawJson.nativeElement.value = this.beautifyJson(this.checkedJson), 300);
+                    this.isJsonParsing = false;
+                } catch (e) {
+                    this.isValid = false;
+
+                    // TO DO: add Error Analyse for SyntaxError
+                    console.error(e);
+                }
+            } else {
                 this.isValid = false;
-
-                // TO DO: add Error Analyse for SyntaxError
-                console.error(e);
             }
-        } else {
-            this.isValid = false;
-        }
+        });
     }
 
     private beautifyJson(json: string): string {
@@ -197,21 +240,35 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         document.execCommand('copy');
     }
 
-    private buildJson(structuredJson: JsonType[]): string {
+    private buildJson(structuredJson: JsonType[], first: boolean = false): string {
         let json: any = {};
 
-        if (structuredJson.length === 1 && typeof structuredJson[ 0 ].value === 'object' && structuredJson[ 0 ].key === null) {
+        if (first && typeof structuredJson[ 0 ].value === 'object') {
             json = this.buildJson(structuredJson[ 0 ].value);
         } else {
             structuredJson.filter((j: JsonType) => !j.remove).forEach((child: JsonType) => {
                 if (typeof child.value === 'object' && child.type === Types.OBJECT) {
-                    json[ child.key ] = this.buildJson(child.value);
+                    const object: string = this.buildJson(child.value);
+                    if (child.key) {
+                        json[ child.key ] = object;
+                    } else {
+                        json = object;
+                    }
                 } else if (typeof child.value === 'object' && child.type === Types.ARRAY) {
                     const childArray: any[] = [];
                     child.value.forEach((c: JsonType) => {
-                        childArray.push(c.value);
+                        childArray.push(
+                            typeof child.value === 'object' ?
+                                this.buildJson(child.value) :
+                                child.value
+                        );
                     });
-                    json[ child.key ] = childArray;
+
+                    if (child.key) {
+                        json[ child.key ] = childArray;
+                    } else {
+                        json = childArray;
+                    }
                 } else {
                     json[ child.key ] = child.value;
                 }
@@ -259,7 +316,7 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     private updateSelection(): void {
-        this.versionSelection = this.versionHistory.map(({ timestamp }) => new Date(timestamp).toLocaleString());
+        this.versionSelection = this.versionHistory.map(({ timestamp }) => timestamp); // new Date(timestamp).toLocaleString()
     }
 
     private addToHistoryDebounced(): void {

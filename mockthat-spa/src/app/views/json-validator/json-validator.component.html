@@ -1,4 +1,4 @@
-<div class="editor">
+<div class="editor" [ngClass]="{ 'valid-input': isValid && hasResult, 'collapsable': !isEditorSpaceOpen}">
     <div class="editor-input">
         <div class="editor-validation" [ngClass]="{ 'valid': isValid && hasResult, 'invalid': !isValid && hasResult }">
             <div class="state">
@@ -16,14 +16,23 @@
                 <app-dropdown [entries]="versionSelection" (selected)="selectedVersion($event)"
                     actionText="Delete All Versions" (actionClicked)="deleteVersionHistory()"></app-dropdown>
             </div>
-            <textarea #rawJson contenteditable="false" spellcheck="false"></textarea>
+            <textarea #rawJson (click)="changeIsEditorSpaceOpen(true)" contenteditable="false"
+                spellcheck="false"></textarea>
+        </div>
+        <div *ngIf="isValid && hasResult" class="open-editor-space" (click)="changeIsEditorSpaceOpen(false, $event)">
+            <div class="center">
+                <i class="fas fa-caret-left fa-lg"></i>
+            </div>
         </div>
     </div>
     <div class="editor-formatted">
-        <div class="editor-formatted-controls">
+        <div class="editor-formatted-controls" [class.deactivated]="!(isValid && hasResult)">
             <div class="wrapper">
                 <app-button level="second" type="toggle-visibility" (action)="toggleTypes()" [active]="showTypes"
                     text="Types">
+                </app-button>
+                <app-button level="second" type="toggle-fold-state" (action)="toggleFoldState()" [active]="allCollapsed"
+                    [text]="!allCollapsed ? 'Collapse all' : 'Expand all'">
                 </app-button>
                 <div class="groupped">
                     <app-button level="first" type="micro-feedback" feedbackText="copied!" (action)="copyBeautified()"
@@ -33,11 +42,29 @@
                 </div>
             </div>
         </div>
-        <section class="json-beautified" *ngIf="isValid && hasResult" [class.show-types]="showTypes">
+        <section class="json-beautified" [class.show-types]="showTypes">
+            <div class="json-skeleton" [class.show]="hasResult && structuredJson.length === 0">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <div class="scrollable">
-                <div class="editor-result">
+                <div class="editor-result" [class.ongoing-process]="hasResult && isJsonParsing">
                     <div class="editor-numeration">
-                        <span *ngFor="let i of [].constructor(500); let row = index">{{ row + 1 }}</span>
+                        <span *ngFor="let i of [].constructor(editorNumerationCount); let row = index">{{ row + 1 }}</span>
                     </div>
                     <ul>
                         <ng-template #recursiveList let-list>
@@ -47,7 +74,7 @@
                                     <span class="json-key" *ngIf="item.key"
                                         (click)="item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? item.show = !item.show : null">"<span
                                             class="copy-value"
-                                            title="{{ item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? 'Click to collapse or ' : '' }}Long press to copy key"
+                                            title="{{ item.type === TYPES.ARRAY || item.type === TYPES.OBJECT ? 'Click to collapse or ' : '' }}Long Press to copy key"
                                             appLongPress
                                             (longPress)="copyValue(item.key)">{{item.key}}</span>":&nbsp;</span><span
                                         class="json-type {{ item.type }}"></span><span (click)="item.show = !item.show"
@@ -55,15 +82,18 @@
                                         *ngIf="item.type === TYPES.OBJECT">{{ '{' }}</span><span
                                         (click)="item.show = !item.show" class="json-bracket start"
                                         *ngIf="item.type === TYPES.ARRAY">{{ '[' }}</span>
-                                    <span class="node-actions"
-                                        *ngIf="(item.type === TYPES.OBJECT || item.type === TYPES.ARRAY) && item.show">
-                                        <app-button level="inline" type="sort-up" (action)="sortNode(item.id)"
-                                            text="Sort ASC">
+                                    <span class="node-array-counter"
+                                        *ngIf="item.type === TYPES.ARRAY && item.show">{{ item.value.length + ' ' + (item.value.length === 1 ? 'value' : 'values') }}</span>
+                                    <span class="node-actions" [class.flying]="item.value.length === 0"
+                                        *ngIf="(item.type === TYPES.ARRAY || item.type === TYPES.OBJECT) && item.show">
+                                        <app-button *ngIf="item.type === TYPES.OBJECT && item.value.length > 0"
+                                            level="inline" type="sort-up" (action)="sortNode(item.id)" text="Sort ASC">
                                         </app-button>
-                                        <app-button level="inline" type="sort-down" (action)="sortNode(item.id, false)"
-                                            text="Sort DESC">
+                                        <app-button *ngIf="item.type === TYPES.OBJECT && item.value.length > 0"
+                                            class="margin-right-small" level="inline" type="sort-down"
+                                            (action)="sortNode(item.id, false)" text="Sort DESC">
                                         </app-button>
-                                        <app-button class="remove margin-left-small" level="inline" type="trash-alt"
+                                        <app-button class="remove" level="inline" type="trash-alt"
                                             (action)="removeNode(item.id)" text="Remove">
                                         </app-button>
                                     </span>
@@ -80,18 +110,20 @@
                                         *ngSwitchCase="TYPES.BOOLEAN">{{item.value ? 'true' : 'false'}}<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.STRING">"<span class="copy-value"
-                                            title="Long press to copy value" appLongPress
+                                            title="Long Press to copy value" appLongPress
                                             (longPress)="copyValue(item.value)">{{item.value}}</span>"<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.DATA_BASE64">"<span class="copy-value"
-                                            title="Long press to copy value" appLongPress
+                                            title="Long Press to copy value" appLongPress
                                             (longPress)="copyValue(item.value)">{{item.value}}</span>"<span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
-                                    <span class="json-value" *ngSwitchCase="TYPES.URL">"<a [href]="item.value"
-                                            target="_blanc">{{item.value}}</a>"<span class="json-commata"
-                                            *ngIf="i !== (list.length - 1)">,</span></span>
+                                    <span class="json-value" *ngSwitchCase="TYPES.URL">"<a class="copy-value"
+                                            [href]="item.value" target="_blanc"
+                                            title="Press to open URL / Long Press to copy URL" appLongPress
+                                            (longPress)="copyValue(item.value)">{{item.value}}</a>"<span
+                                            class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="json-value" *ngSwitchCase="TYPES.NUMBER"><span class="copy-value"
-                                            title="Long press to copy value" appLongPress
+                                            title="Long Press to copy value" appLongPress
                                             (longPress)="copyValue(item.value)">{{item.value}}</span><span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="value-action">

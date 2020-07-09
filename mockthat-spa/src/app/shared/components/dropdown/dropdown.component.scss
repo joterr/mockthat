@@ -8,15 +8,16 @@
 
     .current-selected {
         cursor: pointer;
-        padding: 0.25rem 0.5rem;
         border-radius: 0.05rem;
         color: $color-editor;
         border: #fff solid 1px;
         background-color: #fff;
+        padding: 0.25rem 0.5rem;
+        white-space: nowrap;
 
         span {
             display: inline-block;
-            margin-left: 0.5rem;
+            padding-left: 0.5rem;
             @include std-text-boldest();
         }
     }
@@ -67,6 +68,7 @@
                 color: #fff;
                 @include std-text-bold();
                 line-height: 120%;
+                white-space: nowrap;
 
                 &:hover {
                     opacity: 0.65;

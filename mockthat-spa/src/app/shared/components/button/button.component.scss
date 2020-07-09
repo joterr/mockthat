@@ -100,5 +100,35 @@
             }
         }
 
+        &.toggle-fold-state {
+            .show-on-active {
+                display: none;
+            }
+
+            &.active {
+                background-color: rgba(255, 255, 255, 0);
+                border: 1px solid #fff;
+                color: #fff;
+
+                .show-on-active {
+                    display: inline-block;
+                }
+
+                .hide-on-active {
+                    display: none;
+                }
+            }
+
+            &:not(.active) {
+                background-color: rgba(255, 255, 255, 0);
+                border: 1px solid #fff;
+                color: #fff;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.25);
+                }
+            }
+        }
+
     }
 }

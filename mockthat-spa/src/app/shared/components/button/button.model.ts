@@ -6,6 +6,7 @@ export enum ButtonLevel {
 
 export enum ButtonType {
     TOGGLE_VISIBILITY = 'toggle-visibility',
+    TOGGLE_FOLD_STATE = 'toggle-fold-state',
     MICRO_FEEDBACK = 'micro-feedback',
     SORT_UP = 'sort-up',
     SORT_DOWN = 'sort-down',
