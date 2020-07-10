@@ -1,0 +1,93 @@
+@import "../../../styles.scss";
+
+.string-length-calculator {
+    position: relative;
+    z-index: 999;
+    height: 100%;
+    background-color: $color-editor;
+    border-radius: .25rem;
+    box-shadow: 0 0 1.75rem rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+
+    .input-area {
+        height: 100%;
+        float: left;
+        width: 75%;
+        padding: 0.5rem 0 0.5rem 0.5rem;
+        position: relative;
+
+        .input-field {
+            position: relative;
+            padding: 0.5rem;
+            height: 100%;
+            overflow: hidden;
+
+            &:after {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                opacity: 0.35;
+                border-radius: 0.125rem;
+                transition: 300ms ease background-color;
+                background-color: rgb(255, 255, 255, 0.15);
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+            }
+
+            textarea {
+                display: block;
+                resize: none;
+                padding: 0.5rem;
+                @include std-text-mono();
+                font-size: .725rem;
+                height: 100%;
+                max-height: 100%;
+                width: 100%;
+                color: #fff;
+                border: 0;
+                outline: none;
+                background: none;
+                line-height: 150%;
+            }
+        }
+    }
+
+    .result-area {
+        float: right;
+        position: relative;
+        width: 25%;
+        height: 100%;
+
+        ul.results {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            li {
+                list-style-type: none;
+                padding: 0.625rem 0;
+
+                span {
+                    @include std-text-boldest();
+                    display: block;
+                    color: #fff;
+                    font-size: xx-large;
+                    text-align: center;
+
+                    &.heading {
+                        font-size: small;
+                        padding-top: 0.3125rem;
+                    }
+                }
+            }
+        }
+
+
+    }
+
+}

@@ -16,6 +16,7 @@ div {
         width: 98vw;
     }
 
+    
     #content {
         height: 86vh;
         position: relative;
@@ -25,4 +26,27 @@ div {
             height: 200vh;
         }
     }
+
+    &.small-view {
+        width: 58vw;
+        margin-top: 16vh;
+
+        @include respond-to('x-large') {
+            width: 64vw;
+        }
+    
+        @include respond-to('large') {
+            width: 76vw;
+        }
+    
+        @include respond-to('small') {
+            width: 98vw;
+            margin-top: 0;
+        }
+
+        #content {
+            height: 50vh;
+        }
+    }
+
 }

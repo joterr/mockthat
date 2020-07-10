@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { SHARED_CONSTANTS } from '../../shared-constants';
 
 @Component({
-  selector: 'app-header-nav',
-  templateUrl: './header-nav.component.html',
-  styleUrls: ['./header-nav.component.scss']
+    selector: 'app-header-nav',
+    templateUrl: './header-nav.component.html',
+    styleUrls: [ './header-nav.component.scss' ]
 })
-export class HeaderNavComponent implements OnInit {
+export class HeaderNavComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+    ROUTES: any = SHARED_CONSTANTS.ROUTES;
 
 }

@@ -44,21 +44,21 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
 
     constructor(private localStorage: LocalStorageService) { }
 
-    ngOnInit(): void {
+    ngOnInit() {
         window.setTimeout(() => {
             this.rawJson.nativeElement.focus();
             this.dehydrate();
         });
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit() {
         this.subCollector.push(
-            fromEvent(this.rawJson.nativeElement, 'keyup').subscribe(() => this.rawJsonChanged()),
+            fromEvent(this.rawJson.nativeElement, 'input').subscribe(() => this.rawJsonChanged()),
             fromEvent(this.rawJson.nativeElement, 'keydown').subscribe((key: KeyboardEvent) => this.handleKeyPress(key)),
         );
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy() {
         this.subCollector.forEach((s: Subscription) => s.unsubscribe());
     }
 
@@ -145,7 +145,7 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     private calcEditorNumerationCount(json: string): void {
-        this.editorNumerationCount = (JSON.stringify(json, null, '\t').match(/\n/g) || []).length + 1;
+        this.editorNumerationCount = (JSON.stringify(json, null, '\t').match(/\n/g) || []).length;
     }
 
     private recursiveManipulateViewState(json: JsonType[], show: boolean): void {

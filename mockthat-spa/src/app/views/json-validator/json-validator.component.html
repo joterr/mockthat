@@ -61,7 +61,7 @@
                 <span></span>
                 <span></span>
             </div>
-            <div class="scrollable">
+            <div class="scrollable" *ngIf="hasResult">
                 <div class="editor-result" [class.ongoing-process]="hasResult && isJsonParsing">
                     <div class="editor-numeration">
                         <span *ngFor="let i of [].constructor(editorNumerationCount); let row = index">{{ row + 1 }}</span>

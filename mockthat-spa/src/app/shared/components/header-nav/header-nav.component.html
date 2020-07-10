@@ -1,8 +1,9 @@
 <header>
     <nav>
         <ul>
-            <li><a [routerLink]="['/json-validator']" routerLinkActive="active">JSON Validator</a></li>
-            <li><a class="disabled" [routerLink]="['/rest-api']" routerLinkActive="active">In-Browser REST API</a></li>
+            <li><a [routerLink]="[ ROUTES.JSON_VALIDATOR ]" routerLinkActive="active">JSON Validator</a></li>
+            <li><a [routerLink]="[ ROUTES.STRING_LENGTH ]" routerLinkActive="active">String Length Calculator</a></li>
+            <!-- <li><a class="disabled" [routerLink]="['/rest-api']" routerLinkActive="active">In-Browser REST API</a></li> -->
         </ul>
     </nav>
     <div class="logo">

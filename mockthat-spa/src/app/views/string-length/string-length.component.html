@@ -1,0 +1,23 @@
+<div class="string-length-calculator">
+    <div class="input-area">
+        <div class="input-field">
+            <textarea #string contenteditable="false" spellcheck="false"></textarea>
+        </div>
+    </div>
+    <div class="result-area">
+        <ul class="results">
+            <li>
+                <span>{{ stringLength }}</span>
+                <span class="heading">Characters</span>
+            </li>
+            <li>
+                <span>{{ stringLength - stringLineBreaks }}</span>
+                <span class="heading">Characters w/o Line Breaks</span>
+            </li>
+            <li>
+                <span>{{ stringLineBreaks }}</span>
+                <span class="heading">Line Breaks</span>
+            </li>
+        </ul>
+    </div>
+</div>
