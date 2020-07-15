@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DropdownComponent } from './dropdown.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { MomentModule } from 'ngx-moment';
 
 describe('DropdownComponent', () => {
     let component: DropdownComponent;
@@ -11,7 +12,10 @@ describe('DropdownComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ DropdownComponent ]
+            declarations: [ DropdownComponent ],
+            imports: [
+                MomentModule
+            ],
         })
             .compileComponents();
     }));
@@ -28,13 +32,13 @@ describe('DropdownComponent', () => {
     });
 
     it('should expand', () => {
-        component.entries = [ 'TEST', 'TEST2' ];
+        component.entries = [ '2019-07-14T15:13:53.833Z', '2020-07-14T15:10:57.545Z' ];
         fixture.detectChanges();
 
         de.query(By.css('.current-selected')).nativeElement.click();
         fixture.detectChanges();
 
-        expect(de.query(By.css('span')).nativeElement.innerText).toBe('TEST');
+        expect(de.query(By.css('span')).nativeElement.innerText).toBe('07/14/2019');
         expect(component.isExpanded).toBeTruthy();
     });
 
@@ -42,7 +46,7 @@ describe('DropdownComponent', () => {
         spyOn(component.selected, 'emit');
 
         component.isExpanded = true;
-        component.entries = [ 'TEST', 'TEST2', 'TEST3' ];
+        component.entries = [ '2020-07-14T15:13:53.833Z', '2020-07-14T15:10:57.545Z', '2020-07-10T12:11:42.829Z' ];
         fixture.detectChanges();
 
         de.query(By.css('#entry-2')).nativeElement.click();
@@ -53,7 +57,7 @@ describe('DropdownComponent', () => {
 
     describe('action button', () => {
         it('should show action button', () => {
-            component.entries = [ 'TEST', 'TEST2' ];
+            component.entries = [ '2020-07-14T15:10:57.545Z', '2020-07-10T12:11:42.829Z' ];
             component.actionText = 'TEST_ACTION';
             fixture.detectChanges();
 
@@ -63,7 +67,7 @@ describe('DropdownComponent', () => {
         it('should emit action button clicked', () => {
             spyOn(component.actionClicked, 'emit');
 
-            component.entries = [ 'TEST', 'TEST2' ];
+            component.entries = [ '2020-07-14T15:10:57.545Z', '2020-07-10T12:11:42.829Z' ];
             component.actionText = 'TEST_ACTION';
 
             fixture.detectChanges();

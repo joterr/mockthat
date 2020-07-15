@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { StringLengthComponent } from './string-length.component';
+import { StringUtilitiesComponent } from './string-utilities.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    StringLengthComponent
+    StringUtilitiesComponent
   ],
   imports: [
     SharedModule.forRoot(),
     RouterModule.forChild([
-      { path: '', component: StringLengthComponent }
+      { path: '', component: StringUtilitiesComponent }
     ])
   ]
 })
-export class StringLengthModule { }
+export class StringUtilitiesModule { }

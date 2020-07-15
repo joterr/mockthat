@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StringLengthComponent } from './string-length.component';
+import { StringUtilitiesComponent } from './string-utilities.component';
 import { LocalStorageService } from 'ngx-webstorage';
 import { MockLocalStorageService } from 'src/mocks/local-storage.service.mock';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-describe('StringLengthComponent', () => {
-    let component: StringLengthComponent;
-    let fixture: ComponentFixture<StringLengthComponent>;
+describe('StringUtilitiesComponent', () => {
+    let component: StringUtilitiesComponent;
+    let fixture: ComponentFixture<StringUtilitiesComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -17,13 +17,13 @@ describe('StringLengthComponent', () => {
             providers: [
                 { provide: LocalStorageService, useClass: MockLocalStorageService }
             ],
-            declarations: [ StringLengthComponent ]
+            declarations: [ StringUtilitiesComponent ]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(StringLengthComponent);
+        fixture = TestBed.createComponent(StringUtilitiesComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

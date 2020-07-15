@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     templateUrl: './dropdown.component.html',
     styleUrls: [ './dropdown.component.scss' ]
 })
-export class DropdownComponent {
+export class DropdownComponent implements OnInit, OnDestroy {
     @Input() entries: string[];
     @Input() actionText: string;
     @Output() selected: EventEmitter<number> = new EventEmitter<number>();
@@ -15,10 +15,27 @@ export class DropdownComponent {
     isExpanded: boolean;
     selectedIndex = 0;
 
+    private updateInterval: any; // NodeJS.Timeout
+
+    constructor(
+        private cd: ChangeDetectorRef
+    ) {}
+
+    ngOnInit() {
+        this.updateInterval = setInterval(() => {
+            this.cd.markForCheck();
+        }, 60 * 60 * 1000);
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.updateInterval);
+    }
+
     handleSelfClicked(index: number) {
         this.isExpanded = false;
         this.selectedIndex = index;
         this.selected.emit(index);
+        this.cd.markForCheck();
     }
 
     actionCallback(): void {

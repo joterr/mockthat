@@ -8,8 +8,8 @@ const routes: Routes = [
         loadChildren: () => import('./views/json-validator/json-validator.module').then(m => m.JsonValidatorModule)
     },
     {
-        path: SHARED_CONSTANTS.ROUTES.STRING_LENGTH,
-        loadChildren: () => import('./views/string-length/string-length.module').then(m => m.StringLengthModule)
+        path: SHARED_CONSTANTS.ROUTES.STRING_UTILITIES_CALCULATOR,
+        loadChildren: () => import('./views/string-utilities/string-utilities.module').then(m => m.StringUtilitiesModule)
     },
     {
         path: '**',

@@ -53,7 +53,7 @@ $collapsedWidth: 18rem;
 
 .editor-input {
     height: 100%;
-    width: calc(50% - 0.25rem);
+    width: calc(50% - 0.75rem);
     float: left;
     padding: 0.5rem 0 0.5rem 0.5rem;
     position: relative;
@@ -69,6 +69,7 @@ $collapsedWidth: 18rem;
         position: relative;
         padding: 0.5rem;
         height: 100%;
+        width: 100%;
         overflow: hidden;
 
         &:after {
@@ -155,12 +156,13 @@ $collapsedWidth: 18rem;
             font-size: .725rem;
             height: 100%;
             max-height: 100%;
-            width: 50rem;
+            width: 100%;
             color: #fff;
             border: 0;
             outline: none;
             background: none;
             line-height: 150%;
+            transition: width linear 800ms, opacity ease 800ms;
         }
     }
 }
@@ -394,7 +396,7 @@ $collapsedWidth: 18rem;
                 &>ul>li.type-number:hover:before {
                     content: "";
                     position: absolute;
-                    left: calc(-50px - 0.25rem);
+                    left: calc(-50px - 0.75rem);
                     opacity: 0.5;
                     display: block;
                     width: 50px;
@@ -601,6 +603,7 @@ $collapsedWidth: 18rem;
 
         textarea {
             opacity: 0.35;
+            width: 50rem;
         }
 
         .open-editor-space {

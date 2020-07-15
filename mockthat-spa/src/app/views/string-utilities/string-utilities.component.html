@@ -1,0 +1,35 @@
+<div class="string-length-calculator">
+    <div class="input-area">
+        <div class="input-field">
+            <textarea #string contenteditable="false" spellcheck="false"></textarea>
+            <div class="actions">
+                <ul>
+                    <li><app-button level="first" type="micro-feedback" feedbackText="done!" (action)="doUppercase()" text="All In Uppercase"></app-button></li>
+                    <li><app-button level="first" type="micro-feedback" feedbackText="done!" (action)="doLowercase()" text="All In Lowercase"></app-button></li>
+                    <li><app-button level="first" type="micro-feedback" feedbackText="done!" (action)="doRemoveSpaces()" text="Remove Spaces"></app-button></li>
+                    <li><app-button level="first" type="micro-feedback" feedbackText="done!" (action)="doRemoveLineBreaks()" text="Remove Line Breaks"></app-button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="result-area">
+        <ul class="results">
+            <li>
+                <span>{{ stringLength }}</span>
+                <span class="heading">Characters</span>
+            </li>
+            <li>
+                <span>{{ stringLength - stringLineBreaks }}</span>
+                <span class="heading">Characters w/o Line Breaks</span>
+            </li>
+            <li>
+                <span>{{ stringWordCount }}</span>
+                <span class="heading">Words</span>
+            </li>
+            <li>
+                <span>{{ stringLineBreaks }}</span>
+                <span class="heading">Line Breaks</span>
+            </li>
+        </ul>
+    </div>
+</div>

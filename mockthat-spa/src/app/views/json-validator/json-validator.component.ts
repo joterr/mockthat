@@ -1,4 +1,13 @@
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit, Type } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ElementRef,
+    ViewChild,
+    OnDestroy,
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef
+} from '@angular/core';
 import { JsonType, Types, JsonVersionHistory } from './json-validator.model';
 import { Subscription, fromEvent } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -9,7 +18,8 @@ import { orderBy } from 'natural-orderby';
 @Component({
     selector: 'app-json-validator',
     templateUrl: './json-validator.component.html',
-    styleUrls: [ './json-validator.component.scss' ]
+    styleUrls: [ './json-validator.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('rawJson') rawJson: ElementRef;
@@ -42,7 +52,10 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     // tslint:disable-next-line:max-line-length
     private readonly base64RegEx: RegExp = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
 
-    constructor(private localStorage: LocalStorageService) { }
+    constructor(
+        private localStorage: LocalStorageService,
+        private cd: ChangeDetectorRef
+    ) { }
 
     ngOnInit() {
         window.setTimeout(() => {
@@ -114,6 +127,8 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
 
     sortNode(id: string, ascending = true): void {
         this.isJsonParsing = true;
+        this.cd.markForCheck();
+
         setTimeout(() => {
             const part: JsonType = this.findJsonPartById(this.structuredJson, id);
 
@@ -135,6 +150,8 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
 
     removeNode(id: string): void {
         this.isJsonParsing = true;
+        this.cd.markForCheck();
+
         setTimeout(() => {
             const part: JsonType = this.findJsonPartById(this.structuredJson, id);
             part.remove = true;
@@ -185,6 +202,12 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         const text: string = this.rawJson.nativeElement.value;
         this.hasResult = !!text;
 
+        if (!this.hasResult) {
+            this.structuredJson = [];
+        }
+
+        this.cd.markForCheck();
+
         clearTimeout(this.debounceBeautifyRaw);
 
         // TO DO: Optimise RegEx
@@ -202,17 +225,23 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
                     this.calcEditorNumerationCount(this.checkedJson);
                     console.log(this.structuredJson);
 
-                    this.debounceBeautifyRaw = setTimeout(
-                        () => this.rawJson.nativeElement.value = this.beautifyJson(this.checkedJson), 300);
+                    this.debounceBeautifyRaw = setTimeout(() => {
+                            this.rawJson.nativeElement.value = this.beautifyJson(this.checkedJson);
+                            this.cd.markForCheck();
+                        }, 300);
+
                     this.isJsonParsing = false;
+                    this.cd.markForCheck();
                 } catch (e) {
                     this.isValid = false;
+                    this.cd.markForCheck();
 
                     // TO DO: add Error Analyse for SyntaxError
                     console.error(e);
                 }
             } else {
                 this.isValid = false;
+                this.cd.markForCheck();
             }
         });
     }

@@ -3,10 +3,9 @@ import {
     Output,
     EventEmitter,
     HostListener,
-    OnDestroy,
     OnInit,
-    ElementRef,
-    HostBinding
+    HostBinding,
+    ChangeDetectorRef
 } from '@angular/core';
 import { Subject, of } from 'rxjs';
 import { takeUntil, delay, mergeMap } from 'rxjs/operators';
@@ -25,7 +24,10 @@ export class LongPressDirective implements OnInit {
     private isLongClick = false;
     private readonly longPressDelay = 350;
 
-    constructor(private sanitizer: DomSanitizer) { }
+    constructor(
+        private sanitizer: DomSanitizer,
+        private cd: ChangeDetectorRef
+    ) { }
 
     ngOnInit() {
         this.mouseDown$
@@ -69,6 +71,7 @@ export class LongPressDirective implements OnInit {
 
         setTimeout(() => {
             this.style = '';
+            this.cd.markForCheck();
         }, 200);
     }
 }

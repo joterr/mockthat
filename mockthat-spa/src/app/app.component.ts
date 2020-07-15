@@ -13,7 +13,7 @@ export class AppComponent {
     constructor(private router: Router) {
         this.router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
-                this.isSmallView = val.url && val.url === `/${SHARED_CONSTANTS.ROUTES.STRING_LENGTH}`;
+                this.isSmallView = val.url && val.url === `/${SHARED_CONSTANTS.ROUTES.STRING_UTILITIES_CALCULATOR}`;
             }
         });
     }

@@ -12,7 +12,7 @@
     .input-area {
         height: 100%;
         float: left;
-        width: 75%;
+        width: 80%;
         padding: 0.5rem 0 0.5rem 0.5rem;
         position: relative;
 
@@ -52,25 +52,39 @@
                 background: none;
                 line-height: 150%;
             }
+
+            .actions {
+                position: absolute;
+                bottom: 1.25rem;
+                width: 100%;
+
+                ul {
+                    text-align: center;
+
+                    li {
+                        padding: 0 0.125rem;
+                        display: inline-block;
+                    }
+                }
+            }
         }
     }
 
     .result-area {
         float: right;
         position: relative;
-        width: 25%;
+        width: 20%;
         height: 100%;
 
-        ul.results {
+        ul {
             position: absolute;
-            bottom: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
             width: 100%;
-            margin: 0;
-            padding: 0;
 
             li {
-                list-style-type: none;
                 padding: 0.625rem 0;
+                text-align: center;
 
                 span {
                     @include std-text-boldest();
