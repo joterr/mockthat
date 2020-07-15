@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import { Subscription, fromEvent } from 'rxjs';
+import { WINDOW } from 'src/app/core/services/window-ref.service';
 
 @Component({
     selector: 'app-string-utilities',
@@ -15,8 +16,12 @@ export class StringUtilitiesComponent implements OnInit, AfterViewInit, OnDestro
 
     private subCollector: Subscription[] = [];
 
+    constructor(
+        @Inject(WINDOW) private window: Window
+    ) { }
+
     ngOnInit() {
-        window.setTimeout(() => {
+        this.window.setTimeout(() => {
             this.rawString.nativeElement.focus();
         });
 

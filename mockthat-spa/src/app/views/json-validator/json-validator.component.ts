@@ -6,7 +6,8 @@ import {
     OnDestroy,
     AfterViewInit,
     ChangeDetectionStrategy,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    Inject
 } from '@angular/core';
 import { JsonType, Types, JsonVersionHistory } from './json-validator.model';
 import { Subscription, fromEvent } from 'rxjs';
@@ -14,6 +15,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import * as urlRegex from 'url-regex';
 import { v4 as uuidv4 } from 'uuid';
 import { orderBy } from 'natural-orderby';
+import { WINDOW } from 'src/app/core/services/window-ref.service';
+
 
 @Component({
     selector: 'app-json-validator',
@@ -54,11 +57,12 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
 
     constructor(
         private localStorage: LocalStorageService,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        @Inject(WINDOW) private window: Window
     ) { }
 
     ngOnInit() {
-        window.setTimeout(() => {
+        this.window.setTimeout(() => {
             this.rawJson.nativeElement.focus();
             this.dehydrate();
         });
