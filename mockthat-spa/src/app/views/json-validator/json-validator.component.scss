@@ -1,6 +1,7 @@
 @import "../../../styles.scss";
 
 $collapsedWidth: 18rem;
+$collapsedWidthMedium: 12rem;
 
 
 .editor {
@@ -25,6 +26,9 @@ $collapsedWidth: 18rem;
         background-color: rgba(255, 255, 255, 0.2);
         transition: background-color ease 300ms;
 
+        @include respond-to('small') {
+            display: none;
+        }
 
         .center {
             position: absolute;
@@ -61,7 +65,7 @@ $collapsedWidth: 18rem;
 
     @include respond-to('small') {
         float: none;
-        width: 100%;
+        width: calc(100% - 0.5rem);
         height: 100vh;
     }
 
@@ -178,6 +182,7 @@ $collapsedWidth: 18rem;
     @include respond-to('small') {
         float: none;
         width: 100%;
+        height: 100vh;
     }
 
     .editor-formatted-controls {
@@ -189,6 +194,10 @@ $collapsedWidth: 18rem;
         padding: 0.25rem;
         border-radius: 0.05rem;
         transition: opacity ease 300ms;
+
+        @include respond-to('medium') {
+            text-align: right;
+        }
 
         &.deactivated {
             opacity: 0.4;
@@ -211,9 +220,19 @@ $collapsedWidth: 18rem;
         .wrapper {
             margin: 0 -.125rem;
 
+            @include respond-to('small') {
+                padding: 0.25rem;
+            }
+
             .groupped {
                 display: inline-block;
                 margin-left: 0.25rem;
+
+                @include respond-to('medium') {
+                    padding-top: 0.5rem;
+                    margin-left: 0;
+                    display: block;
+                }
             }
         }
     }
@@ -589,50 +608,64 @@ $collapsedWidth: 18rem;
 }
 
 
-.editor.valid-input.collapsable {
-    .editor-input {
-        width: $collapsedWidth;
-
-        .data-local {
-            display: none;
-        }
-
-        .state {
-            right: 2rem;
-        }
-
-        textarea {
-            opacity: 0.35;
-            width: 50rem;
-        }
-
-        .open-editor-space {
-            right: 0;
-            border-radius: .25rem 0 0 .25rem;
-            background-color: rgba(255, 255, 255, 0.3);
-
-            .center i {
-                transform: rotate(180deg);
-                color: rgba(255, 255, 255, 0.6);
+@include respond-to('min-medium') {
+    .editor.valid-input.collapsable {
+        .editor-input {
+            width: $collapsedWidth;
+        
+            @include respond-to('medium') {
+                width: $collapsedWidthMedium;
             }
-        }
 
-        &:hover {
-            cursor: pointer;
+            .data-local {
+                display: none;
+            }
+
+            .state {
+                right: 2rem;
+            }
 
             textarea {
+                opacity: 0.35;
+                width: 50rem;
+            }
+
+            .open-editor-space {
+                right: 0;
+                border-radius: .25rem 0 0 .25rem;
+                background-color: rgba(255, 255, 255, 0.3);
+
+                .center i {
+                    transform: rotate(180deg);
+                    color: rgba(255, 255, 255, 0.6);
+                }
+            }
+
+            &:hover {
                 cursor: pointer;
+
+                textarea {
+                    cursor: pointer;
+                }
             }
         }
-    }
 
-    .editor-formatted {
-        width: calc(100% - #{$collapsedWidth});
-    }
+        .editor-formatted {
+            width: calc(100% - #{$collapsedWidth});
 
-    .version-history {
-        right: 50%;
-        transform: translateX(50%);
+            @include respond-to('medium') {
+                width: calc(100% - #{$collapsedWidthMedium});
+            }
+
+            @include respond-to('small') {
+                width: 100%;
+            }
+        }
+
+        .version-history {
+            right: 50%;
+            transform: translateX(50%);
+        }
     }
 }
 

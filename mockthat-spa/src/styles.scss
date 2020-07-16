@@ -148,6 +148,7 @@ h6 {
 
 $breakpoints: ("small": (max-width: 767px),
     "medium": (max-width: 1279px),
+    "min-medium": (min-width: 1279px),
     "large": (max-width: 1600px),
     "x-large": (max-width: 1919px));
 

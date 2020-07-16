@@ -22,6 +22,10 @@ div {
         position: relative;
         z-index: 99;
 
+        @include respond-to('medium') {
+            height: 78vh;
+        }
+
         @include respond-to('small') {
             height: 200vh;
         }

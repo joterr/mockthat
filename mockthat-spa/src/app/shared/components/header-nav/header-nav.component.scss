@@ -5,8 +5,12 @@ header {
     margin-bottom: .75rem;
     position: relative;
 
+    @include respond-to('medium') {
+        height: 12vh;
+    }
+
     @include respond-to('small') {
-        height: 30vh;
+        height: 14vh;
     }
 
     nav {
@@ -15,9 +19,19 @@ header {
         bottom: .5rem;
         z-index: 9;
 
+        @include respond-to('small') {
+            left: 1rem;
+            right: 1rem;
+            bottom: .25rem;
+        }
+
         ul {
             margin: 0;
             padding: 0;
+
+            @include respond-to('small') {
+                text-align: center;
+            }
 
             li {
                 display: inline-block;
@@ -25,7 +39,8 @@ header {
                 margin-right: 2.25rem;
 
                 @include respond-to('small') {
-                    margin-right: 1rem;
+                    margin-right: 0.5rem;
+                    margin-left: 0.5rem;
                 }
 
                 a {
@@ -80,6 +95,11 @@ header {
         bottom: 0;
         z-index: 9;
 
+        @include respond-to('small') {
+            top: 1rem;
+            bottom: auto;
+        }
+    
         .main,
         .subline {
             @include std-text-bold();
@@ -87,11 +107,8 @@ header {
             font-size: 2.25rem;
             text-align: right;
 
-            @include respond-to('small') {
-                font-size: 1.65rem;
-            }
             @include respond-to('medium') {
-                font-size: 2.125rem;
+                font-size: 1.65rem;
             }
         }
 
@@ -115,12 +132,9 @@ header {
                 opacity: 0;
                 animation: show ease-in 0.3s forwards 0.5s;
 
-                @include respond-to('small') {
-                    left: 1.55rem;
-                    font-size: x-small;
-                }
                 @include respond-to('medium') {
-                    left: 1.85rem;
+                    left: 1.55rem;
+                    font-size: xx-small;
                 }
             }
 
@@ -151,11 +165,8 @@ header {
             margin-right: 1rem;
             opacity: .6;
 
-            @include respond-to('small') {
-                font-size: 1rem;
-            }
             @include respond-to('medium') {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
         }
 

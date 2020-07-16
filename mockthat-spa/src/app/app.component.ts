@@ -17,8 +17,9 @@ export class AppComponent {
     ) {
         this.router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
-                this.isSmallView = val.url && val.url === `/${SHARED_CONSTANTS.ROUTES.STRING_UTILITIES_CALCULATOR}`;
-                this.updateSeo.forStaticPage(val.url);
+                this.isSmallView = val.urlAfterRedirects
+                    && val.urlAfterRedirects === `/${SHARED_CONSTANTS.ROUTES.STRING_UTILITIES_CALCULATOR}`;
+                this.updateSeo.forStaticPage(val.urlAfterRedirects);
             }
         });
     }
