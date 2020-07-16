@@ -35,7 +35,7 @@ import { LongPressDirective } from './directives/long-press.directive';
     ]
 })
 export class SharedModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<SharedModule> {
         return {
             ngModule: SharedModule
         };
