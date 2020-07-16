@@ -2,5 +2,5 @@
     <div class="micro-feedback-action" *ngIf="showMicroFeedback$ | async">{{ feedbackText }}</div>
     <button type="button" [ngClass]="[ type || '', level ]" [class.active]="active" (click)="triggerAction()">
         <i *ngIf="stdIcon" class="{{ stdIcon }} show-on-active"></i><i *ngIf="disabledIcon"
-            class="{{ disabledIcon }} hide-on-active"></i>{{ text }}</button>
+            class="{{ disabledIcon }} hide-on-active"></i><span class="text">{{ text }}</span></button>
 </div>

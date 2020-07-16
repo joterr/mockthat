@@ -118,6 +118,13 @@ $collapsedWidthMedium: 12rem;
             transition: right 400ms ease, transform 400ms ease;
         }
 
+        .clear-editor {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 999;
+        }
+
         .state {
             position: absolute;
             top: 1rem;
@@ -665,6 +672,10 @@ $collapsedWidthMedium: 12rem;
         .version-history {
             right: 50%;
             transform: translateX(50%);
+        }
+
+        .clear-editor {
+            display: none;
         }
     }
 }

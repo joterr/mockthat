@@ -1,6 +1,7 @@
 export enum ButtonLevel {
     FIRST = 'first',
     SECOND = 'second',
+    THIRD = 'third',
     INLINE = 'inline'
 }
 

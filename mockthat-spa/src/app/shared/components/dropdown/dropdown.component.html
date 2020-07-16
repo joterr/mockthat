@@ -6,10 +6,11 @@
     </ul>
     <div class="current-selected" (click)="isExpanded = !isExpanded">
         <i class="fas fa-bars"></i>
-        <span>{{ entries[selectedIndex] | amCalendar }}</span>
+        <span *ngIf="!showPlaceholder">{{ entries[selectedIndex] | amCalendar }}</span>
+        <span *ngIf="showPlaceholder">{{ placeholderText }}</span>
     </div>
     <ul class="list" *ngIf="entries && entries.length > 1">
-        <li *ngFor="let entry of entries; index as i;" [class.active]="selectedIndex === i">
+        <li *ngFor="let entry of entries; index as i;" [class.active]="showPlaceholder ? false : selectedIndex === i">
             <input type="radio" [value]="entry" id="entry-{{i}}" (click)="handleSelfClicked(i)" />
             <label for="entry-{{i}}">{{ entry | amCalendar }}</label>
         </li>

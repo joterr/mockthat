@@ -9,6 +9,9 @@ import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef, Chan
 export class DropdownComponent implements OnInit, OnDestroy {
     @Input() entries: string[];
     @Input() actionText: string;
+    @Input() showPlaceholder: boolean;
+    @Input() placeholderText: string;
+
     @Output() selected: EventEmitter<number> = new EventEmitter<number>();
     @Output() actionClicked: EventEmitter<null> = new EventEmitter<null>();
 

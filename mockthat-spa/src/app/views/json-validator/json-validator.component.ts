@@ -124,9 +124,8 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         clearTimeout(this.debounceBeautifyRaw);
         clearTimeout(this.debounceVersionHistory);
         this.localStorage.clear(this.jsonHistoryKey);
-        this.rawJson.nativeElement.value = '';
-        this.hasResult = this.isValid = false;
-        this.structuredJson = this.versionHistory = this.versionSelection = [];
+        this.versionHistory = this.versionSelection = [];
+        this.clearEditor();
     }
 
     sortNode(id: string, ascending = true): void {
@@ -165,8 +164,14 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
 
+    clearEditor(): void {
+        this.rawJson.nativeElement.value = '';
+        this.hasResult = this.isValid = false;
+        this.structuredJson = [];
+    }
+
     private calcEditorNumerationCount(json: string): void {
-        this.editorNumerationCount = (JSON.stringify(json, null, '\t').match(/\n/g) || []).length;
+        this.editorNumerationCount = (JSON.stringify(json, null, '\t').match(/\n/g) || []).length + 1;
     }
 
     private recursiveManipulateViewState(json: JsonType[], show: boolean): void {

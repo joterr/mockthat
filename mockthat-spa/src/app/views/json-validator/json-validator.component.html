@@ -14,7 +14,10 @@
             </div>
             <div class="version-history">
                 <app-dropdown [entries]="versionSelection" (selected)="selectedVersion($event)"
-                    actionText="Delete All Versions" (actionClicked)="deleteVersionHistory()"></app-dropdown>
+                    actionText="Delete All Versions" [showPlaceholder]="!hasResult" placeholderText="Local History" (actionClicked)="deleteVersionHistory()"></app-dropdown>
+            </div>
+            <div class="clear-editor" *ngIf="hasResult">
+                <app-button level="third" type="trash-alt" (action)="clearEditor()" text="Clear"></app-button>
             </div>
             <textarea #rawJson (click)="changeIsEditorSpaceOpen(true)" contenteditable="false"
                 spellcheck="false"></textarea>
