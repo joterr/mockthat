@@ -58,6 +58,9 @@ export class ButtonComponent implements OnInit {
             case ButtonType.TRASH_ALT:
                 this.stdIcon = 'far fa-trash-alt';
                 break;
+            case ButtonType.FILTER:
+                this.stdIcon = 'fa fa-filter';
+                break;
         }
     }
 }

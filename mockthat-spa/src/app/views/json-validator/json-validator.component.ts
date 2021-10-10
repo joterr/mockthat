@@ -31,6 +31,7 @@ export class JsonValidatorComponent implements OnInit, OnDestroy, AfterViewInit 
     isValid: boolean;
     hasResult: boolean;
 
+    showFilter: boolean;
     showTypes: boolean;
     allCollapsed: boolean;
     isEditorSpaceOpen: boolean;

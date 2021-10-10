@@ -11,5 +11,6 @@ export enum ButtonType {
     MICRO_FEEDBACK = 'micro-feedback',
     SORT_UP = 'sort-up',
     SORT_DOWN = 'sort-down',
-    TRASH_ALT = 'trash-alt'
+    TRASH_ALT = 'trash-alt',
+    FILTER = 'filter',
 }

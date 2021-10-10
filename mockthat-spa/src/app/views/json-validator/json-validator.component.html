@@ -37,6 +37,8 @@
                 <app-button level="second" type="toggle-fold-state" (action)="toggleFoldState()" [active]="allCollapsed"
                     [text]="!allCollapsed ? 'Collapse all' : 'Expand all'">
                 </app-button>
+                <app-button level="second" type="filter-fun" (action)="null" [active]="showFilter" text="Filter Function">
+                </app-button>
                 <div class="groupped">
                     <app-button level="first" type="micro-feedback" feedbackText="copied!" (action)="copyBeautified()"
                         text="Copy Beautified"></app-button>
@@ -130,7 +132,10 @@
                                             (longPress)="copyValue(item.value)">{{item.value}}</span><span
                                             class="json-commata" *ngIf="i !== (list.length - 1)">,</span></span>
                                     <span class="value-action">
-                                        <app-button class="remove margin-left-small" level="inline" type="trash-alt"
+                                        <app-button class="filter margin-left-small" level="inline" type="filter"
+                                            (action)="removeNode(item.id)" text="Filter">
+                                        </app-button>
+                                        <app-button class="remove" level="inline" type="trash-alt"
                                             (action)="removeNode(item.id)" text="Remove">
                                         </app-button>
                                     </span>
